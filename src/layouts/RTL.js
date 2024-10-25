@@ -13,7 +13,7 @@ import Footer from "components/Footer/Footer.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import routes from "routes.js";
 import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
 // Custom components
@@ -27,6 +27,7 @@ import {
   ChakraLogoLight,
 } from "components/Icons/Icons";
 import bgAdmin from "assets/img/admin-background.png";
+
 export default function Dashboard(props) {
   const { ...rest } = props;
   // states and functions
@@ -34,9 +35,11 @@ export default function Dashboard(props) {
   const [fixed, setFixed] = useState(false);
   // ref for main panel div
   const mainPanel = React.createRef();
+  
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
+
   const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -60,7 +63,7 @@ export default function Dashboard(props) {
     }
     return activeRoute;
   };
-  // This changes navbar state(fixed or not)
+
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
@@ -81,6 +84,7 @@ export default function Dashboard(props) {
     }
     return activeNavbar;
   };
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -93,7 +97,7 @@ export default function Dashboard(props) {
         return (
           <Route
             path={prop.layout + prop.path}
-            component={prop.component}
+            element={<prop.component />}
             key={key}
           />
         );
@@ -102,6 +106,7 @@ export default function Dashboard(props) {
       }
     });
   };
+
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   document.documentElement.dir = "rtl";
@@ -162,10 +167,10 @@ export default function Dashboard(props) {
         {getRoute() ? (
           <PanelContent>
             <PanelContainer>
-              <Switch>
+              <Routes>
                 {getRoutes(routes)}
-                <Redirect from='/rtl' to='/rtl/rtl-support-page' />
-              </Switch>
+                <Route path="*" element={<Navigate to="/rtl/rtl-support-page" />} />
+              </Routes>
             </PanelContainer>
           </PanelContent>
         ) : null}
