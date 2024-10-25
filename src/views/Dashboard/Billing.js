@@ -37,7 +37,7 @@ import {
   olderTransactions,
 } from "variables/general";
 
-function Billing() {
+ function Billing() {
   // Chakra color mode
   const iconBlue = useColorModeValue("blue.500", "blue.500");
   const textColor = useColorModeValue("gray.700", "white");

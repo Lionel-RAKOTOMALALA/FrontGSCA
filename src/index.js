@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client"; // Utiliser ReactDOM.createRoot pour la
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom"; // Importer Routes et Navigate
 
 import                                                          AuthLayout from "layouts/Auth.js";
-import AdminLayout from "layouts/Admin.js";
+import AdminLayout from "./layouts/Admin.js";
 import RTLLayout from "layouts/RTL.js"; // Chakra imports
 import { ChakraProvider } from "@chakra-ui/react";
 // Custom Chakra theme
