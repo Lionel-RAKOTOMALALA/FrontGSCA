@@ -16,7 +16,7 @@ root.render(
   <ChakraProvider theme={theme} resetCss={false} position="relative">
     <HashRouter>
       <Routes>
-        <Route path={`/auth`} element={<AuthLayout />} />
+        <Route path={`/auth/*`} element={<AuthLayout />} />
         <Route path={`/admin/*`} element={<AdminLayout />} /> {/* Utilisez /* pour rendre les sous-routes */}
         <Route path={`/rtl`} element={<RTLLayout />} />
         <Route path={`/`} element={<Navigate to="/admin/dashboard" />} /> {/* Utiliser Navigate au lieu de Redirect */}

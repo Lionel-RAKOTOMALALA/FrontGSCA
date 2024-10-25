@@ -6,6 +6,7 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import routes from "routes.js";
+import SignIn from "../views/Pages/SignIn";
 
 export default function Pages(props) {
   const { ...rest } = props;
@@ -93,8 +94,8 @@ export default function Pages(props) {
       </Portal>
       <Box w='100%'>
         <Box ref={wrapper} w='100%'>
-          <Routes>
-            {getRoutes(routes)}
+          <Routes> 
+            <Route path="/signin" element={<SignIn/>}/>
             <Route path="/auth" element={<Navigate to="/auth/login-page" />} />
           </Routes>
         </Box>
