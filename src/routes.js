@@ -1,12 +1,5 @@
-// import
-import React, { Component }  from 'react';
-import Dashboard from "./views/Dashboard/Dashboard.js";
-import Tables from "views/Dashboard/Tables.js";
-import Billing from "views/Dashboard/Billing.js";
-import RTLPage from "views/RTL/RTLPage.js";
-import Profile from "views/Dashboard/Profile.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
+// importation
+import React, { Component } from 'react';
 
 import {
   HomeIcon,
@@ -21,61 +14,42 @@ import {
 var dashRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
+    name: "Tableau de bord",
     icon: <HomeIcon color='inherit' />,
     layout: "/admin",
   },
   {
     path: "/tables",
-    name: "Tables",
-    rtlName: "لوحة القيادة",
+    name: "Tableaux",
     icon: <StatsIcon color='inherit' />,
     layout: "/admin",
   },
   {
     path: "/billing",
-    name: "Billing",
-    rtlName: "لوحة القيادة",
+    name: "Facturation",
     icon: <CreditIcon color='inherit' />,
     layout: "/admin",
   },
   {
-    path: "/rtl-support-page",
-    name: "RTL",
-    rtlName: "آرتيإل",
+    path: "/support-page", // Remplacez le chemin si nécessaire
+    name: "Assistance",
     icon: <SupportIcon color='inherit' />,
-    layout: "/rtl",
+    layout: "/admin", // Changement de layout
   },
   {
-    name: "ACCOUNT PAGES",
-    category: "account",
-    rtlName: "صفحات",
+    name: "Mon Espace Personnel",  
+    category: "user",
     state: "pageCollapse",
     views: [
       {
         path: "/profile",
-        name: "Profile",
-        rtlName: "لوحة القيادة",
+        name: "Profil",
         icon: <PersonIcon color='inherit' />,
         secondaryNavbar: true,
         layout: "/admin",
       },
-      {
-        path: "/signin",
-        name: "Sign In",
-        rtlName: "لوحة القيادة",
-        icon: <DocumentIcon color='inherit' />,
-        layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        rtlName: "لوحة القيادة",
-        icon: <RocketIcon color='inherit' />,
-        layout: "/auth",
-      },
     ],
   },
 ];
+
 export default dashRoutes;

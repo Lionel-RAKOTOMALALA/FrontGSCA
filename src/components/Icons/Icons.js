@@ -505,6 +505,102 @@ export const VisaIcon = createIcon({
     </svg>
   ),
 });
+export const LogoutIcon = createIcon({
+  displayName: "LogoutIcon",
+  path: (
+    <svg
+      width='24'
+      height='24'
+      viewBox='0 0 24 24'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        fillRule='evenodd'
+        clipRule='evenodd'
+        d='M10 2C10 1.44772 10.4477 1 11 1H16C16.5523 1 17 1.44772 17 2V3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21H3C1.89543 21 1 20.1046 1 19V5C1 3.89543 1.89543 3 3 3H5V2C5 1.44772 5.44772 1 6 1H10ZM11 5V3H6V5H11ZM5 19H19V5H5V19ZM14.7071 14.7071C15.0785 14.3266 15.0785 13.6734 14.7071 13.2929L12.4142 11L14.7071 8.70711C15.0785 8.32665 15.0785 7.67335 14.7071 7.29289C14.3266 6.91243 13.6734 6.91243 13.2929 7.29289L10.2929 10.2929C10.1054 10.4804 10 10.7436 10 11C10 11.2564 10.1054 11.5196 10.2929 11.7071L13.2929 14.7071C13.6734 15.0876 14.3266 15.0876 14.7071 14.7071Z'
+        fill='currentColor'
+      />
+    </svg>
+  ),
+});
+
+// People Icon
+export const PeopleIcon = createIcon({
+  displayName: "PeopleIcon",
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+// Briefcase Icon
+export const BriefcaseIcon = createIcon({
+  displayName: "BriefcaseIcon",
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 4V6H4V20H20V6H14V4H10ZM6 8H18V18H6V8ZM12 0H8V4H16V0H12Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+// Sync Icon
+export const SyncIcon = createIcon({
+  displayName: "SyncIcon",
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 4V1L8 5L12 9V6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18C9.51 18 7.44 16.5 6.66 14.21L5.1 14.85C6.06 17.45 8.79 19 12 19C16.42 19 20 15.42 20 12C20 8.58 16.42 4 12 4ZM6 12C6 8.69 8.69 6 12 6V3L16 7L12 11V8C8.69 8 6 10.69 6 14C6 15.66 6.83 17.11 8.1 18.1L9.4 16.9C8.57 16.29 8 15.2 8 14H6Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
+// Education Icon
+export const EducationIcon = createIcon({
+  displayName: "EducationIcon",
+  path: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2L1 9L12 16L23 9L12 2ZM12 14L4 10V13C4 15.67 7.33 17 12 17C16.67 17 20 15.67 20 13V10L12 14ZM12 18C8.13 18 3 19.34 3 22H21C21 19.34 15.87 18 12 18Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+});
+
 
 export const ArgonLogoDark = createIcon({
   displayName: "ArgonLogoDark",

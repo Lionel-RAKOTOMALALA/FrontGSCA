@@ -14,9 +14,11 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  Icon
 } from "@chakra-ui/react";
 import IconBox from "components/Icons/IconBox";
+import { LogoutIcon } from "components/Icons/Icons";
 import {
   renderThumbDark,
   renderThumbLight,
@@ -26,13 +28,11 @@ import {
   renderViewRTL
 } from "components/Scrollbar/Scrollbar";
 import { HSeparator } from "components/Separator/Separator";
-import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink, useLocation } from "react-router-dom";
 
-
-
+import { MdLogout } from 'react-icons/md';
 // FUNCTIONS
 
 function Sidebar(props) {
@@ -254,8 +254,55 @@ function Sidebar(props) {
             <Box>{brand}</Box>
             <Stack direction="column" mb="40px">
               <Box>{links}</Box>
+              <NavLink to="/logout">
+                <Button
+                  boxSize="initial"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  bg="transparent"
+                  mb={{
+                    xl: "6px",
+                  }}
+                  mx={{
+                    xl: "auto",
+                  }}
+                  py="12px"
+                  ps={{
+                    sm: "10px",
+                    xl: "16px",
+                  }}
+                  borderRadius="15px"
+                  _hover="none"
+                  w="100%"
+                  _active={{
+                    bg: "inherit",
+                    transform: "none",
+                    borderColor: "transparent",
+                  }}
+                  _focus={{
+                    boxShadow: "none",
+                  }}
+                >
+                  <Flex>
+                  <IconBox
+  bg="red.500"
+  color="white"
+  h="30px"
+  w="30px"
+  me="12px"
+  display="flex"
+  alignItems="center"
+  justifyContent="center"
+>
+  <LogoutIcon w="20px" h="20px" color="white" /> {/* Utilisation de l'icône de déconnexion */}
+</IconBox>
+                    <Text color="red.500" my="auto" fontSize="sm">
+                      Déconnexion
+                    </Text>
+                  </Flex>
+                </Button>
+              </NavLink>
             </Stack>
-            <SidebarHelp sidebarVariant={sidebarVariant} />
           </Scrollbars>
         </Box>
       </Box>
@@ -281,44 +328,14 @@ export function SidebarResponsive(props) {
   let activeBg = useColorModeValue("white", "navy.700");
   let inactiveBg = useColorModeValue("white", "navy.700");
   let activeColor = useColorModeValue("gray.700", "white");
-  let inactiveColor = useColorModeValue("gray.400", "white");
-  let sidebarActiveShadow = useColorModeValue(
-    "0px 7px 11px rgba(0, 0, 0, 0.04)",
-    "none"
-  );
-  let sidebarBackgroundColor = useColorModeValue("white", "navy.800");
-
+  let inactiveColor = useColorModeValue("gray.400", "gray.400");
+  let sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       if (prop.redirect) {
         return null;
-      }
-      if (prop.category) {
-        var st = {};
-        st[prop["state"]] = !state[prop.state];
-        return (
-          <>
-            <Text
-              color={activeColor}
-              fontWeight="bold"
-              mb={{
-                xl: "6px",
-              }}
-              mx="auto"
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              py="12px"
-            >
-              {document.documentElement.dir === "rtl"
-                ? prop.rtlName
-                : prop.name}
-            </Text>
-            {createLinks(prop.views)}
-          </>
-        );
       }
       return (
         <NavLink to={prop.layout + prop.path} key={key}>
@@ -327,8 +344,9 @@ export function SidebarResponsive(props) {
               boxSize="initial"
               justifyContent="flex-start"
               alignItems="center"
-              bg={activeBg}
               boxShadow={sidebarActiveShadow}
+              bg={activeBg}
+              transition="all 0.2s linear"
               mb={{
                 xl: "6px",
               }}
@@ -349,7 +367,7 @@ export function SidebarResponsive(props) {
                 borderColor: "transparent",
               }}
               _focus={{
-                boxShadow: "none",
+                boxShadow: "0px 7px 11px rgba(0, 0, 0, 0.04)",
               }}
             >
               <Flex>
@@ -362,6 +380,7 @@ export function SidebarResponsive(props) {
                     h="30px"
                     w="30px"
                     me="12px"
+                    transition="all 0.2s linear"
                   >
                     {prop.icon}
                   </IconBox>
@@ -412,6 +431,7 @@ export function SidebarResponsive(props) {
                     h="30px"
                     w="30px"
                     me="12px"
+                    transition="all 0.2s linear"
                   >
                     {prop.icon}
                   </IconBox>
@@ -428,70 +448,100 @@ export function SidebarResponsive(props) {
       );
     });
   };
-
-  var links = <>{createLinks(routes)}</>;
-
   //  BRAND
-
   var brand = (
-    <Box pt={"35px"} mb="8px">
+    <Box pt={"25px"} mb="12px">
       {logo}
       <HSeparator my="26px" />
     </Box>
   );
 
   // SIDEBAR
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
-  // Color variables
   return (
-    <Flex
-      display={{ sm: "flex", xl: "none" }}
-      ref={mainPanel}
-      alignItems="center"
-    >
-      <HamburgerIcon
-        color={hamburgerColor}
-        w="18px"
-        h="18px"
-        ref={btnRef}
-        onClick={onOpen}
-      />
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        placement={document.documentElement.dir === "rtl" ? "right" : "left"}
-        finalFocusRef={btnRef}
+    <>
+      <Flex
+        display={{ base: "flex", xl: "none" }}
+        position="fixed"
+        top="10px"
+        left="10px"
+        zIndex="999"
       >
-        <DrawerOverlay />
-        <DrawerContent
-          w="250px"
-          maxW="250px"
-          ms={{
-            sm: "16px",
-          }}
-          my={{
-            sm: "16px",
-          }}
-          borderRadius="16px"
-          bg={sidebarBackgroundColor}
+        <Button
+          variant="no-hover"
+          onClick={onOpen}
+          bg={hamburgerColor}
+          borderRadius="15px"
         >
-          <DrawerCloseButton
-            _focus={{ boxShadow: "none" }}
-            _hover={{ boxShadow: "none" }}
-          />
-          <DrawerBody maxW="250px" px="1rem">
-            <Box maxW="100%" h="100vh">
-              <Box>{brand}</Box>
-              <Stack direction="column" mb="40px">
-                <Box>{links}</Box>
-              </Stack>
-              <SidebarHelp />
-            </Box>
+          <HamburgerIcon color={activeColor} w="20px" h="20px" />
+        </Button>
+      </Flex>
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerBody
+            p="20px"
+            bg={useColorModeValue("white", "navy.800")}
+            minH="100vh"
+          >
+            <Box>
+          {brand}
+          <Stack direction="column" mb="40px">
+            <Box>{createLinks(routes)}</Box>
+            <NavLink to="/logout">
+              <Button
+                boxSize="initial"
+                justifyContent="flex-start"
+                alignItems="center"
+                bg="transparent"
+                mb={{
+                  xl: "6px",
+                }}
+                mx={{
+                  xl: "auto",
+                }}
+                py="12px"
+                ps={{
+                  sm: "10px",
+                  xl: "16px",
+                }}
+                borderRadius="15px"
+                _hover="none"
+                w="100%"
+                _active={{
+                  bg: "inherit",
+                  transform: "none",
+                  borderColor: "transparent",
+                }}
+                _focus={{
+                  boxShadow: "none",
+                }}
+              >
+                <Flex>
+                  <IconBox
+                    color="white" // couleur de l'icône
+                    h="30px"
+                    w="30px"
+                    me="12px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Icon as={MdLogout} w="20px" h="20px" color="white" /> {/* Couleur de l'icône */}
+                  </IconBox>
+                  <Text color="gray.700" my="auto" fontSize="sm"> {/* Changer la couleur ici */}
+                    Déconnexion
+                  </Text>
+                </Flex>
+              </Button>
+            </NavLink>
+          </Stack>
+        </Box>
+        
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-    </Flex>
+    </>
   );
 }
 
