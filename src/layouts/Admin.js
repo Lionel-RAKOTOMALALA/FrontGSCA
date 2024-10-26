@@ -28,7 +28,7 @@ import MainPanel from "../components/Layout/MainPanel";
 import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import bgAdmin from "assets/img/admin-background.png";
-import Dashboard from "views/Dashboard/Dashboard";
+import Dashboard from "../views/Dashboard/Dashboard";
 import Tables from "views/Dashboard/Tables";
 import Profile from "views/Dashboard/Profile";
 import Billing from "views/Dashboard/Billing";
