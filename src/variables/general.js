@@ -9,6 +9,273 @@ import avatar8 from "assets/img/avatars/avatar8.png";
 import avatar9 from "assets/img/avatars/avatar9.png";
 import avatar10 from "assets/img/avatars/avatar10.png";
 // Custom icons
+
+// variables/general.js
+
+// variables/general.js
+
+export const employeeData = [
+  {
+    id_employe: 1,
+    nom: "Dupont",
+    prenom: "Jean",
+    date_naissance: "1985-06-15",
+    age: 39,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 12 34 56",
+    email: "jean.dupont@example.com",
+    poste: { titre_poste: "Développeur" },
+    statut: { qualite: "Permanent" },
+    affectation: { 
+      lieu_affectation: "Antananarivo", 
+      date_prise_service: "2010-01-15" 
+    }
+  },
+  {
+    id_employe: 2,
+    nom: "Ranaivo",
+    prenom: "Sophie",
+    date_naissance: "1990-02-20",
+    age: 34,
+    genre: "Féminin",
+    situation_matrimoniale: "Célibataire",
+    contact_personnel: "+261 32 98 76 54",
+    email: "sophie.ranaivo@example.com",
+    poste: { titre_poste: "Chef de Projet" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Tuléar", 
+      date_prise_service: "2021-04-01" 
+    }
+  },
+  {
+    id_employe: 3,
+    nom: "Ravonjy",
+    prenom: "Pierre",
+    date_naissance: "1978-11-30",
+    age: 45,
+    genre: "Masculin",
+    situation_matrimoniale: "Divorcé",
+    contact_personnel: "+261 33 22 33 44",
+    email: "pierre.ravonjy@example.com",
+    poste: { titre_poste: "Administrateur Système" },
+    statut: { qualite: "Permanent" },
+    affectation: { 
+      lieu_affectation: "Antananarivo", 
+      date_prise_service: "2015-07-20" 
+    }
+  },
+  {
+    id_employe: 4,
+    nom: "Andriambololona",
+    prenom: "Lina",
+    date_naissance: "1995-03-10",
+    age: 29,
+    genre: "Féminin",
+    situation_matrimoniale: "Célibataire",
+    contact_personnel: "+261 34 44 55 66",
+    email: "lina.andriambololona@example.com",
+    poste: { titre_poste: "Designer" },
+    statut: { qualite: "Permanent" },
+    affectation: { 
+      lieu_affectation: "Toamasina", 
+      date_prise_service: "2019-09-15" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  },
+  {
+    id_employe: 5,
+    nom: "Zafimahaleo",
+    prenom: "Mihanta",
+    date_naissance: "1982-12-05",
+    age: 41,
+    genre: "Masculin",
+    situation_matrimoniale: "Marié",
+    contact_personnel: "+261 32 88 77 66",
+    email: "mihanta.zafimahaleo@example.com",
+    poste: { titre_poste: "Analyste" },
+    statut: { qualite: "Contractuel" },
+    affectation: { 
+      lieu_affectation: "Mahajanga", 
+      date_prise_service: "2022-05-10" 
+    }
+  }
+];
+
+
+
+
+export const tablesProjectData = [
+  {
+    name: "Project Alpha",
+    logo: "path/to/logo1.png", 
+    status: "Ongoing",
+    budget: "$100,000",
+    progression: "75%"
+  },
+  {
+    name: "Project Beta",
+    logo: "path/to/logo2.png",
+    status: "Completed",
+    budget: "$50,000",
+    progression: "100%"
+  },
+  // Ajoutez d'autres projets selon vos besoins...
+];
+
 import {
   AdobexdLogo,
   AtlassianLogo,
@@ -194,100 +461,7 @@ export const rtlTimelineData = [
   },
 ];
 
-export const tablesTableData = [
-  {
-    logo: avatar1,
-    name: "Esthera Jackson",
-    email: "alexa@simmmple.com",
-    subdomain: "Manager",
-    domain: "Organization",
-    status: "Online",
-    date: "14/06/21",
-  },
-  {
-    logo: avatar2,
-    name: "Alexa Liras",
-    email: "laurent@simmmple.com",
-    subdomain: "Programmer",
-    domain: "Developer",
-    status: "Offline",
-    date: "12/05/21",
-  },
-  {
-    logo: avatar3,
-    name: "Laurent Michael",
-    email: "laurent@simmmple.com",
-    subdomain: "Executive",
-    domain: "Projects",
-    status: "Online",
-    date: "07/06/21",
-  },
-  {
-    logo: avatar4,
-    name: "Freduardo Hill",
-    email: "freduardo@simmmple.com",
-    subdomain: "Manager",
-    domain: "Organization",
-    status: "Online",
-    date: "14/11/21",
-  },
-  {
-    logo: avatar5,
-    name: "Daniel Thomas",
-    email: "daniel@simmmple.com",
-    subdomain: "Programmer",
-    domain: "Developer",
-    status: "Offline",
-    date: "21/01/21",
-  },
-  {
-    logo: avatar7,
-    name: "Mark Wilson",
-    email: "mark@simmmple.com",
-    subdomain: "Designer",
-    domain: "UI/UX Design",
-    status: "Offline",
-    date: "04/09/20",
-  },
-];
 
-export const tablesProjectData = [
-  {
-    logo: AdobexdLogo,
-    name: "Chakra UI Version",
-    budget: "$14,000",
-    status: "Working",
-    progression: 60,
-  },
-  {
-    logo: AtlassianLogo,
-    name: "Add Progress Track",
-    budget: "$3,000",
-    status: "Canceled",
-    progression: 10,
-  },
-  {
-    logo: SlackLogo,
-    name: "Fix Platform Errors",
-    budget: "Not set",
-    status: "Done",
-    progression: 100,
-  },
-  {
-    logo: SpotifyLogo,
-    name: "Launch our Mobile App",
-    budget: "$32,000",
-    status: "Done",
-    progression: 100,
-  },
-  {
-    logo: JiraLogo,
-    name: "Add the New Pricing Page",
-    budget: "$400",
-    status: "Working",
-    progression: 25,
-  },
-];
 
 export const invoicesData = [
   {

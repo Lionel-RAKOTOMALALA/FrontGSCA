@@ -1,10 +1,12 @@
+// Données pour barChartData (Employés Actifs par mois)
 export const barChartData = [
   {
-    name: "Sales",
-    data: [15, 25, 28, 10, 25, 20],
+    name: "Employés Actifs",
+    data: [45, 47, 50, 52, 49, 51, 53, 52, 50, 48, 49, 51],
   },
 ];
 
+// Options pour barChartOptions
 export const barChartOptions = {
   chart: {
     toolbar: {
@@ -15,7 +17,7 @@ export const barChartOptions = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    categories: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Août", "Sep", "Oct", "Nov", "Déc"],
     labels: {
       style: {
         colors: "#A0AEC0",
@@ -26,13 +28,10 @@ export const barChartOptions = {
     axisBorder: {
       show: false,
     },
-    
   },
   yaxis: {
     show: true,
-    color: "#A0AEC0",
     labels: {
-      show: true,
       style: {
         colors: "#A0AEC0",
         fontSize: "14px",
@@ -68,17 +67,23 @@ export const barChartOptions = {
   ],
 };
 
+// Données pour lineChartData (Employés Actifs, Employés en Congé, Employés Affectés Récemment)
 export const lineChartData = [
   {
-    name: "Mobile apps",
-    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+    name: "Employés Actifs",
+    data: [45, 47, 50, 52, 49, 51, 53, 52, 50, 48, 49, 51],
   },
   {
-    name: "Websites",
-    data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+    name: "Employés en Congé",
+    data: [5, 3, 6, 4, 7, 5, 6, 5, 4, 3, 4, 3],
+  },
+  {
+    name: "Employés Affectés Récemment",
+    data: [2, 3, 1, 4, 2, 3, 4, 5, 2, 3, 4, 3],
   },
 ];
 
+// Options pour lineChartOptions
 export const lineChartOptions = {
   chart: {
     toolbar: {
@@ -93,25 +98,13 @@ export const lineChartOptions = {
   },
   stroke: {
     curve: "smooth",
+    width: 3,  // Épaisseur de la ligne pour une meilleure visibilité
   },
   xaxis: {
-    type: "datetime",
-    categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    type: "category",
+    categories: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Août", "Sep", "Oct", "Nov", "Déc"],
     axisTicks: {
-      show: false
+      show: false,
     },
     axisBorder: {
       show: false,
@@ -130,9 +123,15 @@ export const lineChartOptions = {
         fontSize: "12px",
       },
     },
+    min: 0,
+    max: 60,  // Ajustement pour que les données soient bien visibles
+    tickAmount: 6,  // Intervalle pour que la courbe soit fluide
   },
   legend: {
-    show: false,
+    show: true,
+    labels: {
+      colors: "#fff",
+    },
   },
   grid: {
     strokeDashArray: 5,
@@ -148,7 +147,7 @@ export const lineChartOptions = {
       opacityTo: 0,
       stops: [],
     },
-    colors: ["#fff", "#3182CE"],
+    colors: ["#fff", "#3182CE", "#38A169"],
   },
-  colors: ["#fff", "#3182CE"],
+  colors: ["#fff", "#3182CE", "#38A169"],
 };

@@ -25,25 +25,22 @@ export default function Footer(props) {
         mb={{ base: "20px", xl: "0px" }}>
         &copy; {1900 + new Date().getYear()},{" "}
         <Text as='span'>
-          {document.documentElement.dir === "rtl"
-            ? " مصنوع من ❤️ بواسطة"
-            : "Made with ❤️ by "}
+          Fait avec ❤️ par{" "}
         </Text>
         <Link
           color='blue.400'
-          href='https://www.creative-tim.com'
+          href='https://www.facebook.com/profile.php?id=61559973564566'
           target='_blank'>
-          {document.documentElement.dir === "rtl"
-            ? " توقيت الإبداعية"
-            : "Creative Tim "}
+          Rakotomalala Tolotriniaina Lionel
         </Link>
-        &
-        <Link color='blue.400' href='https://www.simmmple.com' target='_blank'>
-          {document.documentElement.dir === "rtl" ? "سيممبل " : " Simmmple"}
+        &nbsp;|&nbsp;
+        <Link
+          color='blue.400'
+          href='https://github.com/Lionel-RAKOTOMALALA'
+          target='_blank'>
+          GitHub
         </Link>
-        {document.documentElement.dir === "rtl"
-          ? "للحصول على ويب أفضل"
-          : " for a better web"}
+        {" "}pour une meilleure gestion des carrières
       </Text>
       <List display='flex'>
         <ListItem
@@ -51,10 +48,8 @@ export default function Footer(props) {
             base: "20px",
             md: "44px",
           }}>
-          <Link color='gray.400' href='https://www.creative-tim.com'>
-            {document.documentElement.dir === "rtl"
-              ? "توقيت الإبداعية"
-              : "Creative Tim"}
+          <Link color='gray.400' href='https://www.facebook.com/profile.php?id=61559973564566'>
+            Facebook
           </Link>
         </ListItem>
         <ListItem
@@ -62,28 +57,8 @@ export default function Footer(props) {
             base: "20px",
             md: "44px",
           }}>
-          <Link color='gray.400' href='https://www.simmmple.com'>
-            {document.documentElement.dir === "rtl" ? "سيممبل" : "Simmmple"}
-          </Link>
-        </ListItem>
-        <ListItem
-          me={{
-            base: "20px",
-            md: "44px",
-          }}>
-          <Link
-            color='gray.400'
-            href='#blog'
-            href='https://creative-tim.com/blog'>
-            {document.documentElement.dir === "rtl" ? "مدونة" : "Blog"}
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            color='gray.400'
-            href='#license'
-            href='https://www.creative-tim.com/license'>
-            {document.documentElement.dir === "rtl" ? "رخصة" : "License"}
+          <Link color='gray.400' href='https://github.com/Lionel-RAKOTOMALALA'>
+            GitHub
           </Link>
         </ListItem>
       </List>

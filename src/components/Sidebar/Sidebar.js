@@ -285,7 +285,7 @@ function Sidebar(props) {
                 >
                   <Flex>
                   <IconBox
-  bg="red.500"
+  bg="#ED8936"
   color="white"
   h="30px"
   w="30px"
@@ -294,9 +294,10 @@ function Sidebar(props) {
   alignItems="center"
   justifyContent="center"
 >
-  <LogoutIcon w="20px" h="20px" color="white" /> {/* Utilisation de l'icône de déconnexion */}
+  <LogoutIcon w="20px" h="20px" color="white" /> 
 </IconBox>
-                    <Text color="red.500" my="auto" fontSize="sm">
+
+                    <Text color="#ED8936" my="auto" fontSize="sm">
                       Déconnexion
                     </Text>
                   </Flex>
