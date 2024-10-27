@@ -5,34 +5,36 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import SearchIcon from "../../../assets/icons/SearchIcon";
-import FilterPopover from "./FilterPopover";
+import SearchIcon from "../../../assets/icons/SearchIcon"; // Icône de recherche personnalisée
+import FilterPopover from "./FilterPopover"; // Composant pour le popover de filtre
 
 // Composant pour les filtres de recherche
 const Filters = ({ columnFilters, setColumnFilters, filterPlaceholder, data }) => {
-  const filterValue = columnFilters.find((f) => f.id === "filter")?.value || ""; // Filtre actuel
+  // Récupère la valeur du filtre actuel, ou une chaîne vide si aucun filtre n'est appliqué
+  const filterValue = columnFilters.find((f) => f.id === "filter")?.value || ""; 
 
-  // Met à jour le filtre
+  // Met à jour le filtre lorsqu'une nouvelle valeur est saisie
   const onFilterChange = (id, value) =>
     setColumnFilters((prev) =>
-      prev.filter((f) => f.id !== id).concat({ id, value })
+      prev.filter((f) => f.id !== id).concat({ id, value }) // Met à jour la liste des filtres
     );
 
   return (
-    <HStack mb={6} spacing={3}>
-      <InputGroup size="sm" maxW="12rem">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={SearchIcon} />
+    <HStack mb={6} spacing={3}> {/* Dispose les éléments horizontalement */}
+      <InputGroup size="sm" maxW="12rem"> {/* Groupe d'entrée pour la recherche */}
+        <InputLeftElement pointerEvents="none"> {/* Icône à gauche de l'input */}
+          <Icon as={SearchIcon} /> {/* Icône de recherche */}
         </InputLeftElement>
         <Input
           type="text"
-          variant="filled"
+          variant="filled" // Style de remplissage
           placeholder={filterPlaceholder} // Placeholder dynamique
-          borderRadius={5}
-          value={filterValue}
+          borderRadius={5} // Arrondi des coins de l'input
+          value={filterValue} // Valeur actuelle du filtre
           onChange={(e) => onFilterChange("filter", e.target.value)} // Gère la mise à jour du filtre
         />
       </InputGroup>
+      {/* Composant pour le popover de filtre */}
       <FilterPopover
         data={data} // Données passées au popover
         renderItem={(item) => (
@@ -46,4 +48,4 @@ const Filters = ({ columnFilters, setColumnFilters, filterPlaceholder, data }) =
   );
 };
 
-export default Filters;
+export default Filters; // Exporte le composant Filters

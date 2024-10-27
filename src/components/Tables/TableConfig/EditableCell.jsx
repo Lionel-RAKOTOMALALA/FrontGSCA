@@ -1,33 +1,34 @@
-import { Input } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Input } from "@chakra-ui/react"; // Importation du composant Input de Chakra UI
+import { useEffect, useState } from "react"; // Importation des hooks useEffect et useState de React
 
 // Composant pour afficher une cellule éditable
 const EditableCell = ({ value: initialValue, onChange }) => {
-  const [value, setValue] = useState(initialValue); // État local pour la valeur
+  // État local pour stocker la valeur de la cellule
+  const [value, setValue] = useState(initialValue);
 
-  // Appelle la fonction onChange lors du flou de l'entrée
+  // Fonction appelée lorsque l'input perd le focus (onBlur)
   const onBlur = () => {
-    onChange(value); // Met à jour la valeur dans le composant parent
+    onChange(value); // Appelle la fonction onChange pour mettre à jour la valeur dans le composant parent
   };
 
-  // Synchronise la valeur initiale si elle change
+  // Synchronise la valeur initiale avec la valeur locale lorsque initialValue change
   useEffect(() => {
-    setValue(initialValue);
+    setValue(initialValue); // Met à jour l'état local si la valeur initiale change
   }, [initialValue]);
 
   return (
     <Input
-      value={value}
-      onChange={(e) => setValue(e.target.value)} // Met à jour l'état local
-      onBlur={onBlur} // Gère le flou
-      variant="filled"
-      size="sm"
-      w="85%"
-      overflow="hidden"
-      textOverflow="ellipsis"
-      whiteSpace="nowrap"
+      value={value} // La valeur de l'input est liée à l'état local
+      onChange={(e) => setValue(e.target.value)} // Met à jour l'état local lors de la saisie
+      onBlur={onBlur} // Appelle onBlur lorsque l'input perd le focus
+      variant="filled" // Variante de style pour le champ de saisie
+      size="sm" // Taille du champ de saisie
+      w="85%" // Largeur du champ de saisie
+      overflow="hidden" // Cache le débordement
+      textOverflow="ellipsis" // Affiche des points de suspension si le texte déborde
+      whiteSpace="nowrap" // Empêche le texte de se diviser sur plusieurs lignes
     />
   );
 };
 
-export default EditableCell;
+export default EditableCell; // Exporte le composant EditableCell
