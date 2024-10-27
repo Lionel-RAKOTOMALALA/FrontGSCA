@@ -355,64 +355,64 @@ export default function Dashboard() {
       </Button>
     </Flex>
   </Flex>
-  <Box overflow={{ sm: "scroll", lg: "hidden" }}>
-  <Table>
-  <Thead>
-    <Tr bg={tableRowColor}>
-      <Th color='gray.400' borderColor={borderColor} width='550px'> {/* Augmentez la largeur ici */}
-        Catégorie
-      </Th>
-      <Th color='gray.400' borderColor={borderColor} width='50px'>
-        Nombre
-      </Th>
-      <Th color='gray.400' borderColor={borderColor} width='50px'></Th>
-    </Tr>
-  </Thead>
-  <Tbody>
-    {employeeStats.map((el, index, arr) => {
-      return (
-        <Tr key={index}>
-          <Td
-            color={textTableColor}
-            fontSize='sm'
-            fontWeight='bold'
-            borderColor={borderColor}
-            border={index === arr.length - 1 ? "none" : null}>
-            {el.category}
-          </Td>
-          <Td
-            color={textTableColor}
-            fontSize='sm'
-            borderColor={borderColor}
-            border={index === arr.length - 1 ? "none" : null}>
-            {el.count}
-          </Td>
-          <Td
-            color={textTableColor}
-            fontSize='sm'
-            borderColor={borderColor}
-            border={index === arr.length - 1 ? "none" : null}>
-            <Flex align='center'>
-              <Text
-                color={textTableColor}
-                fontWeight='bold'
-                fontSize='sm'
-                me='12px'>{`${el.percentage}%`}</Text>
-              <Progress
-                size='xs'
-                colorScheme={el.color}
-                value={el.percentage}
-                minW='120px'
-              />
-            </Flex>
-          </Td>
-        </Tr>
-      );
-    })}
-  </Tbody>
-</Table>
+    <Box overflow={{ sm: "scroll", lg: "hidden" }}>
+    <Table>
+    <Thead>
+      <Tr bg={tableRowColor}>
+        <Th color='gray.400' borderColor={borderColor} width='550px'> {/* Augmentez la largeur ici */}
+          Catégorie
+        </Th>
+        <Th color='gray.400' borderColor={borderColor} width='50px'>
+          Nombre
+        </Th>
+        <Th color='gray.400' borderColor={borderColor} width='50px'></Th>
+      </Tr>
+    </Thead>
+    <Tbody>
+      {employeeStats.map((el, index, arr) => {
+        return (
+          <Tr key={index}>
+            <Td
+              color={textTableColor}
+              fontSize='sm'
+              fontWeight='bold'
+              borderColor={borderColor}
+              border={index === arr.length - 1 ? "none" : null}>
+              {el.category}
+            </Td>
+            <Td
+              color={textTableColor}
+              fontSize='sm'
+              borderColor={borderColor}
+              border={index === arr.length - 1 ? "none" : null}>
+              {el.count}
+            </Td>
+            <Td
+              color={textTableColor}
+              fontSize='sm'
+              borderColor={borderColor}
+              border={index === arr.length - 1 ? "none" : null}>
+              <Flex align='center'>
+                <Text
+                  color={textTableColor}
+                  fontWeight='bold'
+                  fontSize='sm'
+                  me='12px'>{`${el.percentage}%`}</Text>
+                <Progress
+                  size='xs'
+                  colorScheme={el.color}
+                  value={el.percentage}
+                  minW='120px'
+                />
+              </Flex>
+            </Td>
+          </Tr>
+        );
+      })}
+    </Tbody>
+  </Table>
 
-  </Box>
+    </Box>
 </Card>
 
       </Grid>

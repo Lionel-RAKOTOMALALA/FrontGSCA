@@ -1,34 +1,46 @@
-import { Input } from "@chakra-ui/react"; // Importation du composant Input de Chakra UI
-import { useEffect, useState } from "react"; // Importation des hooks useEffect et useState de React
+import { Input, FormControl, FormErrorMessage } from "@chakra-ui/react"; // Importation des composants nécessaires
+import { useEffect, useState } from "react";
 
-// Composant pour afficher une cellule éditable
-const EditableCell = ({ value: initialValue, onChange }) => {
-  // État local pour stocker la valeur de la cellule
+const EditableCell = ({ value: initialValue, onChange, columnId }) => {
   const [value, setValue] = useState(initialValue);
+  const [error, setError] = useState("");
 
-  // Fonction appelée lorsque l'input perd le focus (onBlur)
   const onBlur = () => {
-    onChange(value); // Appelle la fonction onChange pour mettre à jour la valeur dans le composant parent
+    if (validateValue(value)) {
+      onChange(columnId, value);
+      setError(""); // Réinitialiser l'erreur
+    } else {
+      setError("Valeur invalide."); // Message d'erreur
+    }
   };
 
-  // Synchronise la valeur initiale avec la valeur locale lorsque initialValue change
+  const validateValue = (value) => {
+    // Implémentez votre logique de validation ici
+    return value.trim() !== ""; // Exemple : non vide
+  };
+
   useEffect(() => {
-    setValue(initialValue); // Met à jour l'état local si la valeur initiale change
+    setValue(initialValue);
   }, [initialValue]);
 
   return (
-    <Input
-      value={value} // La valeur de l'input est liée à l'état local
-      onChange={(e) => setValue(e.target.value)} // Met à jour l'état local lors de la saisie
-      onBlur={onBlur} // Appelle onBlur lorsque l'input perd le focus
-      variant="filled" // Variante de style pour le champ de saisie
-      size="sm" // Taille du champ de saisie
-      w="85%" // Largeur du champ de saisie
-      overflow="hidden" // Cache le débordement
-      textOverflow="ellipsis" // Affiche des points de suspension si le texte déborde
-      whiteSpace="nowrap" // Empêche le texte de se diviser sur plusieurs lignes
-    />
+    <FormControl isInvalid={!!error} display="inline-block"> {/* Utilisation de FormControl pour gérer les erreurs */}
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+        variant="filled"
+        size="sm"
+        minWidth="50px" // Largeur minimale pour le champ d'entrée
+        maxWidth="300px" // Largeur maximale pour éviter que le champ ne devienne trop large
+        width="fit-content" // Ajustement de la largeur en fonction du contenu
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      />
+      <FormErrorMessage>{error}</FormErrorMessage> {/* Affichage du message d'erreur */}
+    </FormControl>
   );
 };
 
-export default EditableCell; // Exporte le composant EditableCell
+export default EditableCell;

@@ -1,50 +1,35 @@
-import { forwardRef } from "react"; // Importation de forwardRef pour passer les refs
-import { Box, Center, Icon } from "@chakra-ui/react"; // Importation des composants de Chakra UI
-import DatePicker from "react-datepicker"; // Importation du sélecteur de date
-import "react-datepicker/dist/react-datepicker.css"; // Importation du style CSS pour le sélecteur de date
-import CalendarIcon from "../../../assets/icons/CalendarIcon"; // Importation de l'icône de calendrier
+import { Input } from "@chakra-ui/react"; // Importation du composant Input de Chakra UI
+import { useEffect, useState } from "react"; // Importation des hooks useEffect et useState de React
 
-// Composant personnalisé pour l'entrée de date
-const DateCustomInput = forwardRef(({ value, onClick, clearDate }, ref) => (
-  <Center ref={ref} onClick={onClick} cursor="pointer">
-    {value ? ( // Vérifie si une date est sélectionnée
-      <>
-        {value} {/* Affiche la date au format local */}
-        <Box
-          pos="absolute"
-          right={3}
-          fontSize="md"
-          color="red.300"
-          onClick={(e) => {
-            e.stopPropagation(); // Empêche l'événement de clic de se propager
-            clearDate(); // Appelle la fonction pour effacer la date
-          }}
-        >
-          &times; {/* Icône pour supprimer la date (croix) */}
-        </Box>
-      </>
-    ) : (
-      <Icon as={CalendarIcon} fontSize="xl" /> // Icône de calendrier lorsque aucune date n'est sélectionnée
-    )}
-  </Center>
-));
+// Composant pour afficher une cellule de date
+const DateCell = ({ value, updateData, rowId, columnId }) => {
+    // État local pour stocker la valeur de la date
+    const [date, setDate] = useState(value);
 
-// Composant principal pour afficher un sélecteur de date
-const DateCell = ({ value, row, column, updateData }) => {
-  return (
-    <DatePicker
-      wrapperClassName="date-wrapper" // Classe CSS pour le wrapper du sélecteur de date
-      dateFormat="MMM d" // Format d'affichage de la date
-      selected={value instanceof Date ? value : null} // Vérifie que la valeur est une instance de Date
-      onChange={(date) => updateData(row.index, column.id, date)} // Met à jour la date sélectionnée
-      customInput={
-        <DateCustomInput
-          clearDate={() => updateData(row.index, column.id, null)} // Passe la fonction pour effacer la date
-          value={value} // Passe la date sélectionnée
+    // Fonction appelée lorsque l'input perd le focus (onBlur)
+    const onBlur = () => {
+        const newDate = new Date(date);
+        updateData(rowId, columnId, newDate); // Met à jour uniquement la cellule avec l'ID concerné
+    };
+
+    // Synchronise la valeur de la date initiale avec la valeur locale lorsque value change
+    useEffect(() => {
+        setDate(value); // Met à jour l'état local si la valeur initiale change
+    }, [value]);
+
+    return (
+        <Input
+            type="date" // Type de champ date
+            value={date} // La valeur de l'input est liée à l'état local
+            onChange={(e) => setDate(e.target.value)} // Met à jour l'état local lors de la saisie
+            onBlur={onBlur} // Appelle onBlur lorsque l'input perd le focus
+            size="sm" // Taille du champ de saisie
+            w="85%" // Largeur du champ de saisie
+            overflow="hidden" // Cache le débordement
+            textOverflow="ellipsis" // Affiche des points de suspension si le texte déborde
+            whiteSpace="nowrap" // Empêche le texte de se diviser sur plusieurs lignes
         />
-      }
-    />
-  );
+    );
 };
 
 export default DateCell; // Exporte le composant DateCell
