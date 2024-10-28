@@ -162,6 +162,7 @@ export default function Dashboarda(props) {
             <PanelContainer>
               <Routes>
               <Route path="/tables" element={<Tables/>}/>
+              <Route path="/historiqueCarriere" element={<Tables/>}/>
               <Route path="/profile" element={<Profile/>}/>
               <Route path="/billing" element={<Billing/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>

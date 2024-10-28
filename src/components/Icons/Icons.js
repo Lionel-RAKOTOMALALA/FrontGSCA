@@ -582,6 +582,9 @@ export const SyncIcon = createIcon({
   ),
 });
 
+// Setting Icon
+
+
 // Education Icon
 export const EducationIcon = createIcon({
   displayName: "EducationIcon",

@@ -9,6 +9,7 @@ import {
   DocumentIcon,
   RocketIcon,
   SupportIcon,
+  SettingsIcon
 } from "components/Icons/Icons";
 
 var dashRoutes = [
@@ -16,13 +17,34 @@ var dashRoutes = [
     path: "/dashboard",
     name: "Tableau de bord",
     icon: <HomeIcon color='inherit' />,
-    layout: "/admin",
-  },
+    layout: "/admin"
+  }, 
   {
-    path: "/tables",
-    name: "Tableaux",
-    icon: <StatsIcon color='inherit' />,
+    name: "Liste",
+    icon: <HomeIcon color='inherit' />,
     layout: "/admin",
+    category: "tableau",
+    state: "tableauCollapse",
+    views: [
+      {
+        path: "/tables",
+        name: "Liste des employés",
+        icon: <PersonIcon color='inherit' />,
+        layout: "/admin",
+      },
+      {
+        path: "/historiqueCarriere",
+        name: "Historique des carrières",
+        icon: <DocumentIcon color='inherit' />,
+        layout: "/admin",
+      },
+      {
+        path: "/service",
+        name: "Service",
+        icon: <SettingsIcon color='inherit' />,
+        layout: "/admin",
+      },
+    ],
   },
   {
     path: "/billing",
@@ -31,10 +53,10 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/support-page", // Remplacez le chemin si nécessaire
+    path: "/support-page",
     name: "Assistance",
     icon: <SupportIcon color='inherit' />,
-    layout: "/admin", // Changement de layout
+    layout: "/admin",
   },
   {
     name: "Mon Espace Personnel",  

@@ -1,24 +1,26 @@
-/*eslint-disable*/
-import { HamburgerIcon } from "@chakra-ui/icons";
-// chakra imports
+import React from 'react';
 import {
   Box,
   Button,
+  Flex,
+  Stack,
+  Text,
+  useColorModeValue,
+  Icon,
+  Collapse,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerOverlay,
-  Flex,
-  Stack,
-  Text,
-  useColorMode,
-  useColorModeValue,
   useDisclosure,
-  Icon
 } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronUpIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { NavLink, useLocation } from "react-router-dom";
+import { Scrollbars } from "react-custom-scrollbars";
 import IconBox from "components/Icons/IconBox";
 import { LogoutIcon } from "components/Icons/Icons";
+import { HSeparator } from "components/Separator/Separator";
 import {
   renderThumbDark,
   renderThumbLight,
@@ -27,192 +29,267 @@ import {
   renderView,
   renderViewRTL
 } from "components/Scrollbar/Scrollbar";
-import { HSeparator } from "components/Separator/Separator";
-import React from "react";
-import { Scrollbars } from "react-custom-scrollbars";
-import { NavLink, useLocation } from "react-router-dom";
-
-import { MdLogout } from 'react-icons/md';
-// FUNCTIONS
 
 function Sidebar(props) {
-  // to check for active links and opened collapses
-  let location = useLocation();
-  // this is for the rest of the collapses
-  const [state, setState] = React.useState({});
+  const location = useLocation();
   const mainPanel = React.useRef();
-  let variantChange = "0.2s linear";
-  // verifies if routeName is the one active (in browser input)
+  const variantChange = "0.2s linear";
+
+  const { logo, routes } = props;
+
+  const [openSubmenu, setOpenSubmenu] = React.useState(null);
+
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
-  const { colorMode } = useColorMode;
-  // this function creates the links and collapses that appear in the sidebar (left menu)
-  const { sidebarVariant } = props;
+
   const createLinks = (routes) => {
-    // Chakra Color Mode
-    let activeBg = useColorModeValue("white", "navy.700");
-    let inactiveBg = useColorModeValue("white", "navy.700");
-    let activeColor = useColorModeValue("gray.700", "white");
-    let inactiveColor = useColorModeValue("gray.400", "gray.400");
-    let sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
+    const activeBg = useColorModeValue("white", "navy.700");
+    const inactiveBg = useColorModeValue("white", "navy.700");
+    const activeColor = useColorModeValue("gray.700", "white");
+    const inactiveColor = useColorModeValue("gray.400", "gray.400");
+    const sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
+
     return routes.map((prop, key) => {
       if (prop.redirect) {
         return null;
       }
-      if (prop.category) {
-        var st = {};
-        st[prop["state"]] = !state[prop.state];
+
+      if (prop.name === "Mon Espace Personnel") {
         return (
-          <>
+          <Box key={key}>
             <Text
-              color={activeColor}
+              color={inactiveColor}
               fontWeight="bold"
-              mb={{
-                xl: "6px",
-              }}
-              mx="auto"
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              py="12px"
+              mb="4px"
+              ms="4px"
             >
-              {document.documentElement.dir === "rtl"
-                ? prop.rtlName
-                : prop.name}
+              {prop.name}
             </Text>
-            {createLinks(prop.views)}
-          </>
+            {prop.views && prop.views.map((view, viewKey) => (
+              <NavLink to={view.layout + view.path} key={viewKey}>
+                <Button
+                  boxSize="initial"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  bg="transparent"
+                  mb={{
+                    xl: "6px",
+                  }}
+                  mx={{
+                    xl: "auto",
+                  }}
+                  py="12px"
+                  ps={{
+                    sm: "10px",
+                    xl: "16px",
+                  }}
+                  borderRadius="15px"
+                  _hover={{
+                    bg: activeBg,
+                  }}
+                  w="100%"
+                  _active={{
+                    bg: activeBg,
+                    transform: "none",
+                    borderColor: "transparent",
+                  }}
+                  _focus={{
+                    boxShadow: "none",
+                  }}
+                >
+                  <Flex>
+                    <IconBox
+                      bg={activeRoute(view.layout + view.path) === "active" ? "blue.500" : inactiveBg}
+                      color={activeRoute(view.layout + view.path) === "active" ? "white" : "blue.500"}
+                      h="30px"
+                      w="30px"
+                      me="12px"
+                      transition={variantChange}
+                    >
+                      {view.icon}
+                    </IconBox>
+                    <Text
+                      color={activeRoute(view.layout + view.path) === "active" ? activeColor : inactiveColor}
+                      my="auto"
+                      fontSize="sm"
+                    >
+                      {view.name}
+                    </Text>
+                  </Flex>
+                </Button>
+              </NavLink>
+            ))}
+          </Box>
         );
       }
+
+      if (prop.name === "Liste") {
+        return (
+          <Box key={key}>
+            <Button
+              boxSize="initial"
+              justifyContent="flex-start"
+              alignItems="center"
+              bg={openSubmenu === prop.name ? activeBg : "transparent"}
+              mb={{
+                xl: "6px",
+              }}
+              mx={{
+                xl: "auto",
+              }}
+              py="12px"
+              ps={{
+                sm: "10px",
+                xl: "16px",
+              }}
+              pe="16px" // Add right padding
+              borderRadius="15px"
+              _hover={{
+                bg: activeBg,
+              }}
+              w="100%"
+              _active={{
+                bg: activeBg,
+                transform: "none",
+                borderColor: "transparent",
+              }}
+              _focus={{
+                boxShadow: sidebarActiveShadow,
+              }}
+              onClick={() => setOpenSubmenu(openSubmenu === prop.name ? null : prop.name)}
+            >
+              <Flex justifyContent="space-between" alignItems="center" width="100%">
+                <Flex alignItems="center">
+                  <IconBox
+                    bg={openSubmenu === prop.name ? "blue.500" : inactiveBg}
+                    color={openSubmenu === prop.name ? "white" : "blue.500"}
+                    h="30px"
+                    w="30px"
+                    me="12px"
+                    transition={variantChange}
+                  >
+                    {prop.icon}
+                  </IconBox>
+                  <Text
+                    color={openSubmenu === prop.name ? activeColor : inactiveColor}
+                    my="auto"
+                    fontSize="sm"
+                    fontWeight={openSubmenu === prop.name ? "bold" : "normal"}
+                  >
+                    {prop.name}
+                  </Text>
+                </Flex>
+                <Icon
+                  as={openSubmenu === prop.name ? ChevronUpIcon : ChevronDownIcon}
+                  color={openSubmenu === prop.name ? activeColor : inactiveColor}
+                  transition={variantChange}
+                />
+              </Flex>
+            </Button>
+            <Collapse in={openSubmenu === prop.name} animateOpacity>
+              <Stack
+                pl={10}
+                mt={2}
+                spacing={2}
+                transition={variantChange}
+              >
+                {prop.views.map((view, viewKey) => (
+                  <NavLink to={view.layout + view.path} key={viewKey}>
+                    <Text
+                      color={activeRoute(view.layout + view.path) === "active" ? activeColor : inactiveColor}
+                      fontSize="sm"
+                      fontWeight={activeRoute(view.layout + view.path) === "active" ? "bold" : "normal"}
+                      _hover={{
+                        color: activeColor,
+                        transition: variantChange,
+                      }}
+                    >
+                      {view.name}
+                    </Text>
+                  </NavLink>
+                ))}
+              </Stack>
+            </Collapse>
+          </Box>
+        );
+      }
+
       return (
         <NavLink to={prop.layout + prop.path} key={key}>
-          {activeRoute(prop.layout + prop.path) === "active" ? (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              boxShadow={sidebarActiveShadow}
-              bg={activeBg}
-              transition={variantChange}
-              mb={{
-                xl: "6px",
-              }}
-              mx={{
-                xl: "auto",
-              }}
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              py="12px"
-              borderRadius="15px"
-              _hover="none"
-              w="100%"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "0px 7px 11px rgba(0, 0, 0, 0.04)",
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg="blue.500"
-                    color="white"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                    transition={variantChange}
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          ) : (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              bg="transparent"
-              mb={{
-                xl: "6px",
-              }}
-              mx={{
-                xl: "auto",
-              }}
-              py="12px"
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              borderRadius="15px"
-              _hover="none"
-              w="100%"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg={inactiveBg}
-                    color="blue.500"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                    transition={variantChange}
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          )}
+          <Button
+            boxSize="initial"
+            justifyContent="flex-start"
+            alignItems="center"
+            bg={activeRoute(prop.layout + prop.path) === "active" ? activeBg : "transparent"}
+            mb={{
+              xl: "6px",
+            }}
+            mx={{
+              xl: "auto",
+            }}
+            py="12px"
+            ps={{
+              sm: "10px",
+              xl: "16px",
+            }}
+            borderRadius="15px"
+            _hover={{
+              bg: activeBg,
+            }}
+            w="100%"
+            _active={{
+              bg: activeBg,
+              transform: "none",
+              borderColor: "transparent",
+            }}
+            _focus={{
+              boxShadow: activeRoute(prop.layout + prop.path) === "active" ? sidebarActiveShadow : "none",
+            }}
+          >
+            <Flex>
+              {typeof prop.icon === "string" ? (
+                <Icon>{prop.icon}</Icon>
+              ) : (
+                <IconBox
+                  bg={activeRoute(prop.layout + prop.path) === "active" ? "blue.500" : inactiveBg}
+                  color={activeRoute(prop.layout + prop.path) === "active" ? "white" : "blue.500"}
+                  h="30px"
+                  w="30px"
+                  me="12px"
+                  transition={variantChange}
+                >
+                  {prop.icon}
+                </IconBox>
+              )}
+              <Text
+                color={activeRoute(prop.layout + prop.path) === "active" ? activeColor : inactiveColor}
+                my="auto"
+                fontSize="sm"
+                fontWeight={activeRoute(prop.layout + prop.path) === "active" ? "bold" : "normal"}
+              >
+                {document.documentElement.dir === "rtl" ? prop.rtlName : prop.name}
+              </Text>
+            </Flex>
+          </Button>
         </NavLink>
       );
     });
   };
-  const { logo, routes } = props;
 
-  var links = <>{createLinks(routes)}</>;
-  //  BRAND
-  //  Chakra Color Mode
-  let sidebarBg = useColorModeValue("white", "navy.800");
-  let sidebarRadius = "20px";
-  let sidebarMargins = "0px";
-  var brand = (
+  const links = <>{createLinks(routes)}</>;
+
+  const sidebarBg = useColorModeValue("white", "navy.800");
+  const sidebarRadius = "20px";
+  const sidebarMargins = "0px";
+
+  const brand = (
     <Box pt={"25px"} mb="12px">
       {logo}
       <HSeparator my="26px" />
     </Box>
   );
 
-  // SIDEBAR
   return (
     <Box ref={mainPanel}>
       <Box display={{ sm: "none", xl: "block" }} position="fixed">
@@ -237,18 +314,11 @@ function Sidebar(props) {
           <Scrollbars
             autoHide
             renderTrackVertical={
-              document.documentElement.dir === "rtl"
-                ? renderTrackRTL
-                : renderTrack
+              document.documentElement.dir === "rtl" ? renderTrackRTL : renderTrack
             }
-            renderThumbVertical={useColorModeValue(
-              renderThumbLight,
-              renderThumbDark
-            )}
+            renderThumbVertical={useColorModeValue(renderThumbLight, renderThumbDark)}
             renderView={
-              document.documentElement.dir === "rtl"
-                ? renderViewRTL
-                : renderView
+              document.documentElement.dir === "rtl" ? renderViewRTL : renderView
             }
           >
             <Box>{brand}</Box>
@@ -272,7 +342,9 @@ function Sidebar(props) {
                     xl: "16px",
                   }}
                   borderRadius="15px"
-                  _hover="none"
+                  _hover={{
+                    bg: "transparent",
+                  }}
                   w="100%"
                   _active={{
                     bg: "inherit",
@@ -284,20 +356,17 @@ function Sidebar(props) {
                   }}
                 >
                   <Flex>
-                  <IconBox
-  bg="#ED8936"
-  color="white"
-  h="30px"
-  w="30px"
-  me="12px"
-  display="flex"
-  alignItems="center"
-  justifyContent="center"
->
-  <LogoutIcon w="20px" h="20px" color="white" /> 
-</IconBox>
-
-                    <Text color="#ED8936" my="auto" fontSize="sm">
+                    <IconBox
+                      bg="#F81037"
+                      color="white"
+                      h="30px"
+                      w="30px"
+                      me="12px"
+                      transition={variantChange}
+                    >
+                      <LogoutIcon w="20px" h="20px" color="white" />
+                    </IconBox>
+                    <Text color="#F81037" my="auto" fontSize="sm">
                       Déconnexion
                     </Text>
                   </Flex>
@@ -311,153 +380,260 @@ function Sidebar(props) {
   );
 }
 
-// FUNCTIONS
-
 export function SidebarResponsive(props) {
-  // to check for active links and opened collapses
-  let location = useLocation();
+  const location = useLocation();
   const { logo, routes, colorMode, hamburgerColor, ...rest } = props;
-
-  // this is for the rest of the collapses
-  const [state, setState] = React.useState({});
   const mainPanel = React.useRef();
-  // verifies if routeName is the one active (in browser input)
+
+  const [openSubmenu, setOpenSubmenu] = React.useState(null);
+
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
-  // Chakra Color Mode
-  let activeBg = useColorModeValue("white", "navy.700");
-  let inactiveBg = useColorModeValue("white", "navy.700");
-  let activeColor = useColorModeValue("gray.700", "white");
-  let inactiveColor = useColorModeValue("gray.400", "gray.400");
-  let sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
+
+  const activeBg = useColorModeValue("white", "navy.700");
+  const inactiveBg = useColorModeValue("white", "navy.700");
+  const activeColor = useColorModeValue("gray.700", "white");
+  const inactiveColor = useColorModeValue("gray.400", "gray.400");
+  const sidebarActiveShadow = "0px 7px 11px rgba(0, 0, 0, 0.04)";
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // this function creates the links and collapses that appear in the sidebar (left menu)
+  const variantChange = "0.2s linear";
+
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       if (prop.redirect) {
         return null;
       }
+
+      if (prop.name === "Mon Espace Personnel") {
+        return (
+          <Box key={key}>
+            <Text
+              color={inactiveColor}
+              fontWeight="bold"
+              mb="4px"
+              ms="4px"
+            >
+              {prop.name}
+            </Text>
+            {prop.views && prop.views.map((view, viewKey) => (
+              <NavLink to={view.layout + view.path} key={viewKey}>
+                <Button
+                  boxSize="initial"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                  bg="transparent"
+                  mb={{
+                    xl: "6px",
+                  }}
+                  mx={{
+                    xl: "auto",
+                  }}
+                  py="12px"
+                  ps={{
+                    sm: "10px",
+                    xl: "16px",
+                  }}
+                  borderRadius="15px"
+                  _hover={{
+                    bg: activeBg,
+                  }}
+                  w="100%"
+                  _active={{
+                    bg: activeBg,
+                    transform: "none",
+                    borderColor: "transparent",
+                  }}
+                  _focus={{
+                    boxShadow: "none",
+                  }}
+                >
+                  <Flex>
+                    <IconBox
+                      bg={activeRoute(view.layout + view.path) === "active" ? "blue.500" : inactiveBg}
+                      color={activeRoute(view.layout + view.path) === "active" ? "white" : "blue.500"}
+                      h="30px"
+                      w="30px"
+                      me="12px"
+                      transition={variantChange}
+                    >
+                      {view.icon}
+                    </IconBox>
+                    <Text
+                      color={activeRoute(view.layout + view.path) === "active" ? activeColor : inactiveColor}
+                      my="auto"
+                      fontSize="sm"
+                    >
+                      {view.name}
+                    </Text>
+                  </Flex>
+                </Button>
+              </NavLink>
+            ))}
+          </Box>
+        );
+      }
+
+      if (prop.name === "Liste") {
+        return (
+          <Box key={key}>
+            <Button
+              boxSize="initial"
+              justifyContent="flex-start"
+              alignItems="center"
+              bg={openSubmenu === prop.name ? activeBg : "transparent"}
+              mb={{
+                xl: "6px",
+              }}
+              mx={{
+                xl: "auto",
+              }}
+              py="12px"
+              ps={{
+                sm: "10px",
+                xl: "16px",
+              }}
+              pe="16px" // Add right padding
+              borderRadius="15px"
+              _hover={{
+                bg: activeBg,
+              }}
+              w="100%"
+              _active={{
+                bg: activeBg,
+                transform: "none",
+                borderColor: "transparent",
+              }}
+              _focus={{
+                boxShadow: sidebarActiveShadow,
+              }}
+              onClick={() => setOpenSubmenu(openSubmenu === prop.name ? null : prop.name)}
+            >
+              <Flex justifyContent="space-between" alignItems="center" width="100%">
+                <Flex alignItems="center">
+                  <IconBox
+                    bg={openSubmenu === prop.name ? "blue.500" : inactiveBg}
+                    color={openSubmenu === prop.name ? "white" : "blue.500"}
+                    h="30px"
+                    w="30px"
+                    me="12px"
+                    transition={variantChange}
+                  >
+                    {prop.icon}
+                  </IconBox>
+                  <Text
+                    color={openSubmenu === prop.name ? activeColor : inactiveColor}
+                    my="auto"
+                    fontSize="sm"
+                    fontWeight={openSubmenu === prop.name ? "bold" : "normal"}
+                  >
+                    {prop.name}
+                  </Text>
+                </Flex>
+                <Icon
+                  as={openSubmenu === prop.name ? ChevronUpIcon : ChevronDownIcon}
+                  color={openSubmenu === prop.name ? activeColor : inactiveColor}
+                  transition={variantChange}
+                />
+              </Flex>
+            </Button>
+            <Collapse in={openSubmenu === prop.name} animateOpacity>
+              <Stack
+                pl={10}
+                mt={2}
+                spacing={2}
+                transition={variantChange}
+              >
+                {prop.views.map((view, viewKey) => (
+                  <NavLink to={view.layout + view.path} key={viewKey}>
+                    <Text
+                      color={activeRoute(view.layout + view.path) === "active" ? activeColor : inactiveColor}
+                      fontSize="sm"
+                      fontWeight={activeRoute(view.layout + view.path) === "active" ? "bold" : "normal"}
+                      _hover={{
+                        color: activeColor,
+                        transition: variantChange,
+                      }}
+                    >
+                      {view.name}
+                    </Text>
+                  </NavLink>
+                ))}
+              </Stack>
+            </Collapse>
+          </Box>
+        );
+      }
+
       return (
         <NavLink to={prop.layout + prop.path} key={key}>
-          {activeRoute(prop.layout + prop.path) === "active" ? (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              boxShadow={sidebarActiveShadow}
-              bg={activeBg}
-              transition="all 0.2s linear"
-              mb={{
-                xl: "6px",
-              }}
-              mx={{
-                xl: "auto",
-              }}
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              py="12px"
-              borderRadius="15px"
-              _hover="none"
-              w="100%"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "0px 7px 11px rgba(0, 0, 0, 0.04)",
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg="blue.500"
-                    color="white"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                    transition="all 0.2s linear"
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={activeColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          ) : (
-            <Button
-              boxSize="initial"
-              justifyContent="flex-start"
-              alignItems="center"
-              bg="transparent"
-              mb={{
-                xl: "6px",
-              }}
-              mx={{
-                xl: "auto",
-              }}
-              py="12px"
-              ps={{
-                sm: "10px",
-                xl: "16px",
-              }}
-              borderRadius="15px"
-              _hover="none"
-              w="100%"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-            >
-              <Flex>
-                {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
-                  <IconBox
-                    bg={inactiveBg}
-                    color="blue.500"
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                    transition="all 0.2s linear"
-                  >
-                    {prop.icon}
-                  </IconBox>
-                )}
-                <Text color={inactiveColor} my="auto" fontSize="sm">
-                  {document.documentElement.dir === "rtl"
-                    ? prop.rtlName
-                    : prop.name}
-                </Text>
-              </Flex>
-            </Button>
-          )}
+          <Button
+            boxSize="initial"
+            justifyContent="flex-start"
+            alignItems="center"
+            bg={activeRoute(prop.layout + prop.path) === "active" ? activeBg : "transparent"}
+            mb={{
+              xl: "6px",
+            }}
+            mx={{
+              xl: "auto",
+            }}
+            py="12px"
+            ps={{
+              sm: "10px",
+              xl: "16px",
+            }}
+            borderRadius="15px"
+            _hover={{
+              bg: activeBg,
+            }}
+            w="100%"
+            _active={{
+              bg: activeBg,
+              transform: "none",
+              borderColor: "transparent",
+            }}
+            _focus={{
+              boxShadow: activeRoute(prop.layout + prop.path) === "active" ? sidebarActiveShadow : "none",
+            }}
+          >
+            <Flex>
+              {typeof prop.icon === "string" ? (
+                <Icon>{prop.icon}</Icon>
+              ) : (
+                <IconBox
+                  bg={activeRoute(prop.layout + prop.path) === "active" ? "blue.500" : inactiveBg}
+                  color={activeRoute(prop.layout + prop.path) === "active" ? "white" : "blue.500"}
+                  h="30px"
+                  w="30px"
+                  me="12px"
+                  transition={variantChange}
+                >
+                  {prop.icon}
+                </IconBox>
+              )}
+              <Text
+                color={activeRoute(prop.layout + prop.path) === "active" ? activeColor : inactiveColor}
+                my="auto"
+                fontSize="sm"
+                fontWeight={activeRoute(prop.layout + prop.path) === "active" ? "bold" : "normal"}
+              >
+                {document.documentElement.dir === "rtl" ? prop.rtlName : prop.name}
+              </Text>
+            </Flex>
+          </Button>
         </NavLink>
       );
     });
   };
-  //  BRAND
-  var brand = (
+
+  const brand = (
     <Box pt={"25px"} mb="12px">
       {logo}
       <HSeparator my="26px" />
     </Box>
   );
 
-  // SIDEBAR
   return (
     <>
       <Flex
@@ -486,59 +662,59 @@ export function SidebarResponsive(props) {
             minH="100vh"
           >
             <Box>
-          {brand}
-          <Stack direction="column" mb="40px">
-            <Box>{createLinks(routes)}</Box>
-            <NavLink to="/logout">
-              <Button
-                boxSize="initial"
-                justifyContent="flex-start"
-                alignItems="center"
-                bg="transparent"
-                mb={{
-                  xl: "6px",
-                }}
-                mx={{
-                  xl: "auto",
-                }}
-                py="12px"
-                ps={{
-                  sm: "10px",
-                  xl: "16px",
-                }}
-                borderRadius="15px"
-                _hover="none"
-                w="100%"
-                _active={{
-                  bg: "inherit",
-                  transform: "none",
-                  borderColor: "transparent",
-                }}
-                _focus={{
-                  boxShadow: "none",
-                }}
-              >
-                <Flex>
-                  <IconBox
-                    color="white" // couleur de l'icône
-                    h="30px"
-                    w="30px"
-                    me="12px"
-                    display="flex"
+              {brand}
+              <Stack direction="column" mb="40px">
+                <Box>{createLinks(routes)}</Box>
+                <NavLink to="/logout">
+                  <Button
+                    boxSize="initial"
+                    justifyContent="flex-start"
                     alignItems="center"
-                    justifyContent="center"
+                    bg="transparent"
+                    mb={{
+                      xl: "6px",
+                    }}
+                    mx={{
+                      xl: "auto",
+                    }}
+                    py="12px"
+                    ps={{
+                      sm: "10px",
+                      xl: "16px",
+                    }}
+                    borderRadius="15px"
+                    _hover={{
+                      bg: "transparent",
+                    }}
+                    w="100%"
+                    _active={{
+                      bg: "inherit",
+                      transform: "none",
+                      borderColor: "transparent",
+                    }}
+                    _focus={{
+                      boxShadow: "none",
+                    }}
                   >
-                    <Icon as={MdLogout} w="20px" h="20px" color="white" /> {/* Couleur de l'icône */}
-                  </IconBox>
-                  <Text color="gray.700" my="auto" fontSize="sm"> {/* Changer la couleur ici */}
-                    Déconnexion
-                  </Text>
-                </Flex>
-              </Button>
-            </NavLink>
-          </Stack>
-        </Box>
-        
+                    <Flex>
+                      <IconBox
+                        bg="#F81037"
+                        color="white"
+                        h="30px"
+                        w="30px"
+                        me="12px"
+                        transition={variantChange}
+                      >
+                        <Icon as={LogoutIcon} w="20px" h="20px" color="white" />
+                      </IconBox>
+                      <Text color="#F81037" my="auto" fontSize="sm">
+                        Déconnexion
+                      </Text>
+                    </Flex>
+                  </Button>
+                </NavLink>
+              </Stack>
+            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

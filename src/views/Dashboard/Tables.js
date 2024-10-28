@@ -1,11 +1,14 @@
 import React from "react";
 import { Flex, useColorModeValue, Text, Button } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
-import EmployeeTable from "../../components/Tables/Employe/EmployeeTable"; // Assurez-vous que le chemin est correct
-import { employeeData } from "variables/general"; // Assurez-vous que cela pointe vers le bon fichier
+import EmployeeTable from "../../components/Tables/Employe/EmployeeTable"; // Adjust the path if necessary
+import HistoriqueCarriere from "../../components/Tables/HistoriqueCarriere/HistoriqueCarriereTable"; // Adjust the path if necessary
+
 
 function Tables() {
+  const location = useLocation(); // Get the current location
   const iconBlue = useColorModeValue("blue.500", "blue.500");
   const iconBoxInside = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.700", "gray.200");
@@ -22,7 +25,7 @@ function Tables() {
     "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
   );
 
-  // Couleurs spécifiques au bouton en fonction du mode
+  // Specific button colors based on the mode
   const buttonBg = useColorModeValue("blue.500", "white");
   const buttonColor = useColorModeValue("white", "blue.500");
 
@@ -37,7 +40,7 @@ function Tables() {
       >
         <Flex align="center" justify="space-between" p="22px">
           <Text fontSize="lg" color={textColor} fontWeight="bold">
-            Informations sur les Employés
+            {location.pathname === "/admin/tables" ? "Informations sur les Employés" : "Historique de Carrière"}
           </Text>
           <Button 
             variant="primary" 
@@ -50,7 +53,14 @@ function Tables() {
           </Button>
         </Flex>
         <CardBody bg={cardBg}>
-          <EmployeeTable employeeData={employeeData} />
+          {/* Conditionally render the component based on the current path */}
+          {location.pathname === "/admin/tables" ? (
+            <EmployeeTable />
+          ) : location.pathname === "/admin/historiqueCarriere" ? (
+            <HistoriqueCarriere />
+          ) : (
+            <Text color={textColor}>Aucune donnée à afficher</Text>
+          )}
         </CardBody>
       </Card>
     </Flex>
