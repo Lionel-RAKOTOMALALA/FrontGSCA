@@ -1,6 +1,83 @@
 import { createIcon } from "@chakra-ui/icons";
 import React, { Component }  from 'react';
 
+
+
+
+export const CalendarIcon = createIcon({
+  displayName: "CalendarIcon",
+  viewBox: "0 0 24 24",
+  path: (
+    <g>
+      <path
+        d="M3 4h18v2H3zM3 10h18v12H3z"
+        fill="#000000"
+      />
+      <path
+        d="M3 4h18v2H3z"
+        fill="#FF61F6"
+      />
+    </g>
+  ),
+});
+
+export const PhoneIcon = createIcon({
+  displayName: "PhoneIcon",
+  viewBox: "0 0 24 24",
+  path: (
+    <g>
+      <path
+        d="M21 15.46l-5.3-1.4a1 1 0 00-1.15.49l-1.57 2.48A17.8 17.8 0 0110.69 12 17.8 17.8 0 0114.87 5.34l2.48-1.57a1 1 0 00.49-1.15l-1.4-5.3A1 1 0 0014 0H6a1 1 0 00-1 1v4a1 1 0 001 1h2v2H6a1 1 0 00-1 1v8a1 1 0 001 1h2v2H6a1 1 0 00-1 1v4a1 1 0 001 1h8a1 1 0 001-1v-4a1 1 0 00-1-1h-2v-2h2a1 1 0 001-1v-4a1 1 0 00-1-1h-2V5h2a1 1 0 001-1V1.54a1 1 0 00-.66-.94L21 15.46z"
+        fill="#000000"
+      />
+    </g>
+  ),
+});
+
+export const EmailIcon = createIcon({
+  displayName: "EmailIcon",
+  viewBox: "0 0 24 24",
+  path: (
+    <g>
+      <path
+        d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2zm0 2l-9 6L3 6h18z"
+        fill="#000000"
+      />
+    </g>
+  ),
+});
+
+
+
+export const GraduationCapIcon = createIcon({
+  displayName: "GraduationCapIcon",
+  viewBox: "0 0 24 24",
+  path: (
+    <g>
+      <path
+        d="M12 2L1 8v2l11 5 11-5V8l-11-6zm0 8.88L2 10.64V9.55l10 4.66 10-4.66v1.09l-10 5.27z"
+        fill="#000000"
+      />
+    </g>
+  ),
+});
+
+export const FileTextIcon = createIcon({
+  displayName: "FileTextIcon",
+  viewBox: "0 0 24 24",
+  path: (
+    <g>
+      <path
+        d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm0 2v16h12V4H6zm1 3h10v2H7V7zm0 3h10v2H7v-2zm0 3h10v2H7v-2z"
+        fill="#000000"
+      />
+    </g>
+  ),
+});
+
+
+
+
 export const AdobexdLogo = createIcon({
   displayName: "AdobexdLogo",
   viewBox: "0 0 24 24",

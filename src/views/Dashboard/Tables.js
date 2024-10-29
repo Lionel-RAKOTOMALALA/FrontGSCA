@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, useColorModeValue, Text, Button } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import EmployeeTable from "../../components/Tables/Employe/EmployeeTable"; // Adjust the path if necessary
 import HistoriqueCarriere from "../../components/Tables/HistoriqueCarriere/HistoriqueCarriereTable"; // Adjust the path if necessary
-
+import { AddEmployeeModal } from "../../components/Modals/AddEmployeeModal"; // Adjust path if necessary
 
 function Tables() {
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
+
   const iconBlue = useColorModeValue("blue.500", "blue.500");
   const iconBoxInside = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.700", "gray.200");
@@ -42,18 +46,20 @@ function Tables() {
           <Text fontSize="lg" color={textColor} fontWeight="bold">
             {location.pathname === "/admin/tables" ? "Informations sur les Employés" : "Historique de Carrière"}
           </Text>
-          <Button 
-            variant="primary" 
-            maxH="30px" 
-            color={buttonColor} 
-            bg={buttonBg}
-            _hover={{ bg: useColorModeValue("blue.600", "gray.100") }}
-          >
-            Ajouter
-          </Button>
+          {location.pathname === "/admin/tables" && (
+            <Button
+              variant="primary"
+              maxH="30px"
+              color={buttonColor}
+              bg={buttonBg}
+              _hover={{ bg: useColorModeValue("blue.600", "gray.100") }}
+              onClick={onOpen} // Open modal on click
+            >
+              Ajouter
+            </Button>
+          )}
         </Flex>
         <CardBody bg={cardBg}>
-          {/* Conditionally render the component based on the current path */}
           {location.pathname === "/admin/tables" ? (
             <EmployeeTable />
           ) : location.pathname === "/admin/historiqueCarriere" ? (
@@ -63,6 +69,9 @@ function Tables() {
           )}
         </CardBody>
       </Card>
+
+      {/* AddEmployeeModal component */}
+      <AddEmployeeModal isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 }
