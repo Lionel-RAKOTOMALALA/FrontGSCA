@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Flex,
@@ -20,11 +20,21 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import toast, { Toaster } from 'react-hot-toast';
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/store';
+import { verifyPassword } from '../../helper/helper';
+import { usernameValidate, passwordValidate } from '../../helper/Validate';
 import signInImage from "assets/img/HotelDesFinancesBg.jpg";
 import { FaGoogle, FaApple, FaFacebook } from "react-icons/fa";
+import MEF from "assets/img/MEF.png";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const setUsername = useAuthStore(state => state.setUsername); // Function to set the username in the store
+  const username = useAuthStore(state => state.username); // Récupérer le nom d'utilisateur du store
+  const navigate = useNavigate();
 
   const bgColor = useColorModeValue("gray.50", "gray.800");
   const primaryColor = useColorModeValue("teal.500", "teal.300");
@@ -38,6 +48,63 @@ function Login() {
   const colorIcons = useColorModeValue("gray.700", "white");
   const bgIcons = useColorModeValue("transparent", "navy.700");
   const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
+
+
+
+  // Utilisation de useEffect pour surveiller username
+  useEffect(() => {
+    console.log(username);
+  }, [username]); // Ajoute username comme dépendance
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+
+    // Logique de validation personnalisée
+    validate: async (values) => {
+      let errors = {};
+      const usernameErrors = await usernameValidate(values);
+      const passwordErrors = await passwordValidate(values);
+
+      errors = { ...usernameErrors, ...passwordErrors };
+
+      return errors;
+    },
+
+    validateOnBlur: false,
+    validateOnChange: false,
+
+    onSubmit: async (values) => {
+      setUsername(values.username);
+      console.log("Attempting login with username:", values.username); // Log the username being used
+      
+      try {
+        const loginResponse = await verifyPassword(
+          { username: values.username, password: values.password },
+          setUsername
+        );
+    
+        console.log('LoginResponse:', loginResponse); // Check the full response
+    
+        if (loginResponse.error) {
+          console.log("Login error:", loginResponse.error);
+          toast.error("Mot de passe incorrect pour l'utilisateur " + values.username);
+        } else {
+          // Successful login
+          let { token } = loginResponse;
+          localStorage.setItem('token', token);
+          navigate('/admin/profile');
+        }
+      } catch (error) {
+        console.error("Error during login:", error); // Log the error
+        toast.error(error.message || "Erreur inconnue");
+      }
+    }
+    
+  });
+
 
   return (
     <Flex h="100vh" w="100vw" overflow="hidden">
@@ -81,7 +148,6 @@ function Login() {
           </Box>
         </Box>
 
-        {/* Section de connexion */}
         <Flex
           position="absolute"
           top={0}
@@ -97,7 +163,7 @@ function Login() {
             <VStack spacing={4} align="stretch">
               <Box alignSelf="center" mb={4}>
                 <Image
-                  src={signInImage}
+                  src={MEF}
                   alt="Logo"
                   w="100px"
                   h="100px"
@@ -162,35 +228,57 @@ function Login() {
                 ou
               </Text>
 
-              <FormControl>
-                <FormLabel fontSize="sm" fontWeight="normal">Email</FormLabel>
-                <Input type="email" placeholder="Votre email" mb={3} size="lg" />
-                <FormLabel fontSize="sm" fontWeight="normal">Mot de passe</FormLabel>
-                <InputGroup size="lg" mb={3}>
+              <form onSubmit={formik.handleSubmit}>
+                <FormControl>
+                  <FormLabel fontSize="sm" fontWeight="normal">Nom d'utilisateur</FormLabel>
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Votre mot de passe"
+                    type="text"
+                    name="username"
+                    placeholder="username"
+                    mb={3}
+                    size="lg"
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
                   />
-                  <InputRightElement h="full">
-                    <Button
-                      variant="ghost"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
+                  <FormLabel fontSize="sm" fontWeight="normal">Mot de passe</FormLabel>
+                  <InputGroup size="lg" mb={3}>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="Votre mot de passe"
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                    />
+                    <InputRightElement h="full">
+                      <Button
+                        variant="ghost"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
 
-                <FormControl display="flex" alignItems="center" mb={3}>
-                  <Switch id="remember-login" colorScheme="blue" me="10px" />
-                  <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-                    Se souvenir de moi
-                  </FormLabel>
+                  <FormControl display="flex" alignItems="center" mb={3}>
+                    <Switch id="remember-login" colorScheme="blue" me="10px" />
+                    <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
+                      Se souvenir de moi
+                    </FormLabel>
+                  </FormControl>
+                  <Button
+                    type="submit"
+                    fontSize="10px"
+                    fontWeight="bold"
+                    w="100%"
+                    h="45"
+                    mb={3}
+                    bg={ButtonColor}
+                    _hover={{ bg: HoverColor }}
+                  >
+                    SE CONNECTER
+                  </Button>
                 </FormControl>
-                <Button fontSize="10px" fontWeight="bold" w="100%" h="45" mb={3} bg={ButtonColor} _hover={{ bg: HoverColor }}>
-                  SE CONNECTER
-                </Button>
-              </FormControl>
+              </form>
 
               <Flex justifyContent="center" alignItems="center" maxW="100%" mt="0px">
                 <Text color={textColor} fontWeight="medium">
@@ -204,6 +292,7 @@ function Login() {
           </Container>
         </Flex>
       </Box>
+      <Toaster />
     </Flex>
   );
 }
