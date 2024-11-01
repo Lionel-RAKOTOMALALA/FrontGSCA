@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -6,6 +6,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
   VStack,
   Image,
@@ -13,22 +15,29 @@ import {
   Checkbox,
   Link,
   useColorModeValue,
+  HStack,
+  Icon,
+  Switch,
 } from "@chakra-ui/react";
-
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import signInImage from "assets/img/HotelDesFinancesBg.jpg";
-
-import { FaGoogle, FaApple } from "react-icons/fa"; // Import Google and Apple icons
-
-
+import { FaGoogle, FaApple, FaFacebook } from "react-icons/fa";
 
 function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const bgColor = useColorModeValue("gray.50", "gray.800");
   const primaryColor = useColorModeValue("teal.500", "teal.300");
   const secondaryColor = useColorModeValue("teal.600", "teal.400");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const textColor = useColorModeValue("gray.700", "white");
   const ButtonColor = useColorModeValue("blue.500", "blue.500");
-  const HoverColor = useColorModeValue("blue.400", "blue.600") ;
+  const HoverColor = useColorModeValue("blue.400", "blue.600");
+  const bgForm = useColorModeValue("white", "gray.900");
+  const titleColor = useColorModeValue("gray.700", "blue.500");
+  const colorIcons = useColorModeValue("gray.700", "white");
+  const bgIcons = useColorModeValue("transparent", "navy.700");
+  const bgIconsHover = useColorModeValue("gray.50", "whiteAlpha.100");
 
   return (
     <Flex h="100vh" w="100vw" overflow="hidden">
@@ -46,13 +55,13 @@ function Login() {
           left={0}
           w="100%"
           h="100%"
-          bg="blackAlpha.600"
+          bg="blackAlpha.700"
           p={8}
           color="white"
           display="flex"
           justifyContent="center"
           alignItems="center"
-          textAlign="center"  // Optionnel pour centrer le texte à l'intérieur du Box
+          textAlign="center"
         >
           <Box
             position="absolute"
@@ -61,19 +70,16 @@ function Login() {
             transform="translate(-50%, -50%)"
             w="100%"
             maxW="600px"
-            
           >
             <Text fontSize="6xl" color={ButtonColor} fontWeight="bold" mb={6}>
               BIENVENU
             </Text>
-            <Text color="white" fontSize="xl" maxW="600px">
+            <Text color="whiteAlpha.900" fontSize="xl" maxW="600px">
               Nous sommes ravis de vous accueillir sur notre plateforme.
               Connectez-vous pour accéder à votre compte et profiter de nos services.
             </Text>
           </Box>
-
         </Box>
-
 
         {/* Section de connexion */}
         <Flex
@@ -82,14 +88,14 @@ function Login() {
           right={0}
           w={["100%", "100%", "50%", "40%"]}
           h="100%"
-          bg="white"
-          opacity={0.9}
+          bg={bgForm}
+          opacity={0.95}
           justifyContent="center"
           alignItems="center"
         >
           <Container maxW="sm" p={8}>
-            <VStack spacing={8} align="stretch">
-              <Box alignSelf="center" mb={6}>
+            <VStack spacing={4} align="stretch">
+              <Box alignSelf="center" mb={4}>
                 <Image
                   src={signInImage}
                   alt="Logo"
@@ -100,58 +106,100 @@ function Login() {
                 />
               </Box>
 
+              <Text fontSize="xl" fontWeight="bold" textAlign="center" mb={4}>
+                Se connecter avec
+              </Text>
+
+              <HStack spacing="15px" justify="center" mb="4">
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="8px"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  bg={bgIcons}
+                  _hover={{ bg: bgIconsHover }}
+                >
+                  <Link href="#">
+                    <Icon as={FaFacebook} color={colorIcons} w="30px" h="30px" />
+                  </Link>
+                </Flex>
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="8px"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  bg={bgIcons}
+                  _hover={{ bg: bgIconsHover }}
+                >
+                  <Link href="#">
+                    <Icon as={FaApple} color={colorIcons} w="30px" h="30px" />
+                  </Link>
+                </Flex>
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="8px"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  bg={bgIcons}
+                  _hover={{ bg: bgIconsHover }}
+                >
+                  <Link href="#">
+                    <Icon as={FaGoogle} color={colorIcons} w="30px" h="30px" />
+                  </Link>
+                </Flex>
+              </HStack>
+
+              <Text fontSize="lg" color="gray.500" fontWeight="bold" textAlign="center" mb={0}>
+                ou
+              </Text>
+
               <FormControl>
-                <FormLabel color={textColor}>Email</FormLabel>
-                <Input
-                  type="email"
-                  placeholder="Entrez votre email"
-                  borderColor="gray.300"
-                  _hover={{ borderColor: borderColor }}
-                  _focus={{ borderColor: borderColor, boxShadow: `0 0 0 1px ${primaryColor}` }}
-                />
+                <FormLabel fontSize="sm" fontWeight="normal">Email</FormLabel>
+                <Input type="email" placeholder="Votre email" mb={3} size="lg" />
+                <FormLabel fontSize="sm" fontWeight="normal">Mot de passe</FormLabel>
+                <InputGroup size="lg" mb={3}>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Votre mot de passe"
+                  />
+                  <InputRightElement h="full">
+                    <Button
+                      variant="ghost"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+
+                <FormControl display="flex" alignItems="center" mb={3}>
+                  <Switch id="remember-login" colorScheme="blue" me="10px" />
+                  <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
+                    Se souvenir de moi
+                  </FormLabel>
+                </FormControl>
+                <Button fontSize="10px" fontWeight="bold" w="100%" h="45" mb={3} bg={ButtonColor} _hover={{ bg: HoverColor }}>
+                  SE CONNECTER
+                </Button>
               </FormControl>
-              <FormControl>
-                <FormLabel color={textColor}>Mot de passe</FormLabel>
-                <Input
-                  type="password"
-                  placeholder="Entrez votre mot de passe"
-                  borderColor="gray.300"
-                  _hover={{ borderColor: borderColor }}
-                  _focus={{ borderColor: borderColor, boxShadow: `0 0 0 1px ${primaryColor}` }}
-                />
-              </FormControl>
-              <Button colorScheme="teal" size="lg" bg={ButtonColor} _hover={{ bg: HoverColor }}>
-                Se connecter
-              </Button>
-              <Flex justify="space-between" align="center">
-                <Checkbox colorScheme="teal">Se souvenir de moi</Checkbox>
-                <Link color={ButtonColor  } fontSize="sm">
-                  Mot de passe oublié ?
-                </Link>
+
+              <Flex justifyContent="center" alignItems="center" maxW="100%" mt="0px">
+                <Text color={textColor} fontWeight="medium">
+                  Vous n'avez pas de compte ?
+                  <Link color={titleColor} as="span" ms="5px" href="#" fontWeight="bold">
+                    S'inscrire
+                  </Link>
+                </Text>
               </Flex>
-              <Text color={textColor} textAlign="center">
-                Vous n'avez pas de compte ?{" "}
-                <Link color={ButtonColor}>S'inscrire</Link>
-              </Text>
-              <Text color={textColor} textAlign="center" fontWeight="bold">
-                Ou
-              </Text>
-              <Flex justify="center" gap={4}>
-              <Button
-                leftIcon={<FaGoogle />}
-                variant="outline"
-                color={ButtonColor}
-              >
-                Google
-              </Button>
-              <Button
-                leftIcon={<FaApple />}
-                variant="outline"
-                color={ButtonColor}
-              >
-                Apple
-              </Button>
-            </Flex>
             </VStack>
           </Container>
         </Flex>
