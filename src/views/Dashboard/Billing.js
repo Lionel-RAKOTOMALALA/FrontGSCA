@@ -1,401 +1,210 @@
-// Chakra imports
+import React, { useState } from "react";
 import {
   Box,
   Button,
   Flex,
   Grid,
   Icon,
-  Spacer,
   Text,
   useColorMode,
   useColorModeValue,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  VStack,
+  HStack,
+  SimpleGrid,
+  Tooltip,
+  Avatar,
+  AvatarGroup,
 } from "@chakra-ui/react";
-// Assets
-import BackgroundCard1 from "assets/img/BackgroundCard1.png";
-// Custom components
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
-import IconBox from "components/Icons/IconBox";
-import { MastercardIcon, VisaIcon } from "components/Icons/Icons";
-import { HSeparator } from "components/Separator/Separator";
-import BillingRow from "components/Tables/BillingRow";
-import InvoicesRow from "components/Tables/InvoicesRow";
-import TransactionRow from "components/Tables/TransactionRow";
-import React from "react";
-import {
-  FaPaypal,
-  FaPencilAlt,
-  FaRegCalendarAlt,
-  FaWallet,
-} from "react-icons/fa";
-import { RiMastercardFill } from "react-icons/ri";
-import {
-  billingData,
-  invoicesData,
-  newestTransactions,
-  olderTransactions,
-} from "variables/general";
+import { FaFileAlt, FaFilePdf, FaPrint, FaSearch, FaChartLine, FaEye, FaDownload } from "react-icons/fa";
 
- function Billing() {
-  // Chakra color mode
-  const iconBlue = useColorModeValue("blue.500", "blue.500");
-  const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("#dee2e6", "transparent");
+// Mock data for impression lists
+const reports = [
+  { name: "Rapport quotidien", date: "30 Mai 2023", type: "Quotidien", pages: 5, status: "Généré", author: "Jean D." },
+  { name: "Rapport d'incidents", date: "29 Mai 2023", type: "Quotidien", pages: 3, status: "En attente", author: "Marie L." },
+  { name: "Rapport de patrouille", date: "28 Mai 2023", type: "Quotidien", pages: 4, status: "Généré", author: "Pierre M." },
+  { name: "Résumé hebdomadaire", date: "22-28 Mai 2023", type: "Hebdomadaire", pages: 10, status: "Généré", author: "Sophie R." },
+  { name: "Analyse des tendances", date: "15-21 Mai 2023", type: "Hebdomadaire", pages: 8, status: "En révision", author: "Luc B." },
+  { name: "Rapport mensuel", date: "Mai 2023", type: "Mensuel", pages: 20, status: "Généré", author: "Claire T." },
+];
+
+function ImpressionLists() {
   const { colorMode } = useColorMode();
+  const textColor = useColorModeValue("gray.700", "white");
+  const bgCard = useColorModeValue("white", "navy.800");
+  const bgHover = useColorModeValue("gray.100", "navy.700");
+  const bgButton = useColorModeValue("teal.300", "teal.400");
+  const iconColor = useColorModeValue("teal.300", "teal.300");
 
-  console.log(colorMode);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredReports = reports.filter(report => 
+    report.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Flex direction='column' pt={{ base: "120px", md: "75px" }}>
-      <Grid templateColumns={{ sm: "1fr", lg: "2fr 1.2fr" }} templateRows='1fr'>
-        <Box>
-          <Grid
-            templateColumns={{
-              sm: "1fr",
-              md: "1fr 1fr",
-              xl: "1fr 1fr 1fr 1fr",
-            }}
-            templateRows={{ sm: "auto auto auto", md: "1fr auto", xl: "1fr" }}
-            gap='26px'>
-            <Card
-              backgroundImage={
-                colorMode === "dark"
-                  ? "linear-gradient(180deg, #3182CE 0%, #63B3ED 100%)"
-                  : BackgroundCard1
-              }
-              backgroundRepeat='no-repeat'
-              background='cover'
-              bgPosition='10%'
-              p='16px'
-              h={{ sm: "220px", xl: "100%" }}
-              gridArea={{ md: "1 / 1 / 2 / 3", xl: "1 / 1 / 2 / 3" }}>
-              <CardBody h='100%' w='100%'>
-                <Flex
-                  direction='column'
-                  color='white'
-                  h='100%'
-                  p='0px 10px 20px 10px'
-                  w='100%'>
-                  <Flex justify='space-between' align='center'>
-                    <Text fontSize='md' fontWeight='bold'>
-                      Argon x Chakra
-                    </Text>
-                    <Icon
-                      as={RiMastercardFill}
-                      w='48px'
-                      h='auto'
-                      color='gray.400'
-                    />
-                  </Flex>
-                  <Spacer />
-                  <Flex direction='column'>
-                    <Box>
-                      <Text
-                        fontSize='2xl'
-                        letterSpacing='2px'
-                        fontWeight='bold'>
-                        7812 2139 0823 XXXX
-                      </Text>
-                    </Box>
-                    <Flex mt='14px'>
-                      <Flex direction='column' me='34px'>
-                        <Text fontSize='xs'>VALID THRU</Text>
-                        <Text fontSize='xs' fontWeight='bold'>
-                          05/24
-                        </Text>
-                      </Flex>
-                      <Flex direction='column'>
-                        <Text fontSize='xs'>CVV</Text>
-                        <Text fontSize='xs' fontWeight='bold'>
-                          09X
-                        </Text>
-                      </Flex>
-                    </Flex>
-                  </Flex>
-                </Flex>
-              </CardBody>
-            </Card>
-            <Card p='16px' display='flex' align='center' justify='center'>
+      <Card mb='20px' align='center'>
+        <CardBody>
+          <Flex direction={{ base: "column", md: "row" }} align='center' justify='space-between' w='100%'>
+            <VStack align={{ base: "center", md: "start" }} mb={{ base: 4, md: 0 }}>
+              <Text color={textColor} fontSize='2xl' fontWeight='bold'>
+                Centre d'Impression
+              </Text>
+              <Text color='gray.500'>Gérez et imprimez vos rapports facilement</Text>
+            </VStack>
+            <HStack>
+              <Button
+                leftIcon={<FaPrint />}
+                bg={bgButton}
+                color='white'
+                _hover={{ bg: "teal.200" }}
+                size='md'
+              >
+                Imprimer Tous
+              </Button>
+              <InputGroup maxW='300px'>
+                <InputLeftElement pointerEvents='none'>
+                  <FaSearch color='gray.300' />
+                </InputLeftElement>
+                <Input 
+                  placeholder='Rechercher des rapports...' 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </InputGroup>
+            </HStack>
+          </Flex>
+        </CardBody>
+      </Card>
+
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} mb={8}>
+        <Card>
+          <CardBody>
+            <VStack align='center'>
+              <Icon as={FaFilePdf} w={10} h={10} color={iconColor} />
+              <Text fontSize='2xl' fontWeight='bold'>{reports.length}</Text>
+              <Text>Rapports Disponibles</Text>
+            </VStack>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <VStack align='center'>
+              <Icon as={FaPrint} w={10} h={10} color={iconColor} />
+              <Text fontSize='2xl' fontWeight='bold'>
+                {reports.filter(r => r.status === "Généré").length}
+              </Text>
+              <Text>Rapports Générés</Text>
+            </VStack>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <VStack align='center'>
+              <Icon as={FaChartLine} w={10} h={10} color={iconColor} />
+              <Text fontSize='2xl' fontWeight='bold'>+12.7%</Text>
+              <Text>Augmentation ce mois</Text>
+            </VStack>
+          </CardBody>
+        </Card>
+      </SimpleGrid>
+
+      <Grid templateColumns={{ base: "1fr", lg: "2fr 1fr" }} gap={6}>
+        <VStack spacing={6} align='stretch'>
+          {filteredReports.map((report, index) => (
+            <Card key={index} bg={bgCard} _hover={{ bg: bgHover, transform: "translateY(-5px)" }} transition="all 0.3s">
               <CardBody>
-                <Flex direction='column' align='center' w='100%' py='14px'>
-                  <IconBox as='box' h={"60px"} w={"60px"} bg={iconBlue}>
-                    <Icon h={"24px"} w={"24px"} color='white' as={FaWallet} />
-                  </IconBox>
-                  <Flex
-                    direction='column'
-                    m='14px'
-                    justify='center'
-                    textAlign='center'
-                    align='center'
-                    w='100%'>
-                    <Text fontSize='md' color={textColor} fontWeight='bold'>
-                      Salary
-                    </Text>
-                    <Text
-                      mb='24px'
-                      fontSize='xs'
-                      color='gray.400'
-                      fontWeight='semibold'>
-                      Belong Interactive
-                    </Text>
-                    <HSeparator />
-                  </Flex>
-                  <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                    +$2000
+                <Flex justify='space-between' align='center'>
+                  <HStack spacing={4}>
+                    <Icon as={FaFileAlt} color={iconColor} boxSize={6} />
+                    <VStack align='start' spacing={0}>
+                      <Text fontWeight='bold' fontSize='lg'>{report.name}</Text>
+                      <Text fontSize='sm' color='gray.500'>{report.date} • {report.type}</Text>
+                    </VStack>
+                  </HStack>
+                  <HStack>
+                    <Tooltip label="Voir le rapport">
+                      <Button size='sm' variant='ghost' colorScheme='blue'>
+                        <Icon as={FaEye} />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip label="Télécharger le PDF">
+                      <Button size='sm' variant='ghost' colorScheme='green'>
+                        <Icon as={FaDownload} />
+                      </Button>
+                    </Tooltip>
+                  </HStack>
+                </Flex>
+                <Flex mt={4} justify='space-between' align='center'>
+                  <HStack>
+                    <Text fontSize='sm' color='gray.500'>{report.pages} pages</Text>
+                    <Text fontSize='sm' color='gray.500'>•</Text>
+                    <Text fontSize='sm' color='gray.500'>Par {report.author}</Text>
+                  </HStack>
+                  <Text
+                    fontSize='sm'
+                    fontWeight='bold'
+                    color={
+                      report.status === "Généré" ? "green.500" :
+                      report.status === "En attente" ? "orange.500" :
+                      "red.500"
+                    }
+                  >
+                    {report.status}
                   </Text>
                 </Flex>
               </CardBody>
             </Card>
-            <Card p='16px' display='flex' align='center' justify='center'>
-              <CardBody>
-                <Flex
-                  direction='column'
-                  align='center'
-                  justify='center'
-                  w='100%'
-                  py='14px'>
-                  <IconBox as='box' h={"60px"} w={"60px"} bg={iconBlue}>
-                    <Icon h={"24px"} w={"24px"} color='white' as={FaPaypal} />
-                  </IconBox>
-                  <Flex
-                    direction='column'
-                    m='14px'
-                    justify='center'
-                    textAlign='center'
-                    align='center'
-                    w='100%'>
-                    <Text fontSize='md' color={textColor} fontWeight='bold'>
-                      Paypal
-                    </Text>
-                    <Text
-                      mb='24px'
-                      fontSize='xs'
-                      color='gray.400'
-                      fontWeight='semibold'>
-                      Freelance Payment
-                    </Text>
-                    <HSeparator />
-                  </Flex>
-                  <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                    $455.00
-                  </Text>
-                </Flex>
-              </CardBody>
-            </Card>
-          </Grid>
-          <Card p='16px' mt='24px'>
+          ))}
+        </VStack>
+
+        <VStack spacing={6}>
+          <Card>
             <CardHeader>
-              <Flex
-                justify='space-between'
-                align='center'
-                minHeight='60px'
-                w='100%'>
-                <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                  Payment Method
-                </Text>
-                <Button variant={colorMode === "dark" ? "primary" : "dark"}>
-                  ADD A NEW CARD
-                </Button>
-              </Flex>
+              <Text fontSize='lg' fontWeight='bold'>Activité Récente</Text>
             </CardHeader>
             <CardBody>
-              <Flex
-                direction={{ sm: "column", md: "row" }}
-                align='center'
-                w='100%'
-                justify='center'
-                py='1rem'>
-                <Flex
-                  p='1rem'
-                  bg={colorMode === "dark" ? "navy.900" : "transparent"}
-                  borderRadius='15px'
-                  width='100%'
-                  border='1px solid'
-                  borderColor={borderColor}
-                  align='center'
-                  mb={{ sm: "24px", md: "0px" }}
-                  me={{ sm: "0px", md: "24px" }}>
-                  <IconBox me='10px' w='25px' h='22px'>
-                    <MastercardIcon w='100%' h='100%' />
-                  </IconBox>
-                  <Text color='gray.400' fontSize='md' fontWeight='semibold'>
-                    7812 2139 0823 XXXX
-                  </Text>
-                  <Spacer />
-                  <Button p='0px' w='16px' h='16px' variant='no-effects'>
-                    <Icon
-                      as={FaPencilAlt}
-                      color={colorMode === "dark" && "white"}
-                    />
-                  </Button>
-                </Flex>
-                <Flex
-                  p='16px'
-                  bg={colorMode === "dark" ? "navy.900" : "transparent"}
-                  borderRadius='15px'
-                  width='100%'
-                  border='1px solid'
-                  borderColor={borderColor}
-                  align='center'>
-                  <IconBox me='10px' w='25px' h='25px'>
-                    <VisaIcon w='100%' h='100%' />
-                  </IconBox>
-                  <Text color='gray.400' fontSize='md' fontWeight='semibold'>
-                    7812 2139 0823 XXXX
-                  </Text>
-                  <Spacer />
-                  <Button
-                    p='0px'
-                    bg='transparent'
-                    w='16px'
-                    h='16px'
-                    variant='no-effects'>
-                    <Icon
-                      as={FaPencilAlt}
-                      color={colorMode === "dark" && "white"}
-                    />
-                  </Button>
-                </Flex>
-              </Flex>
+              <VStack align='stretch' spacing={4}>
+                {reports.slice(0, 5).map((report, index) => (
+                  <HStack key={index} justify='space-between'>
+                    <HStack>
+                      <Avatar size='sm' name={report.author} />
+                      <VStack align='start' spacing={0}>
+                        <Text fontSize='sm' fontWeight='medium'>{report.name}</Text>
+                        <Text fontSize='xs' color='gray.500'>{report.date}</Text>
+                      </VStack>
+                    </HStack>
+                    <Text fontSize='xs' fontWeight='bold' color={report.status === "Généré" ? "green.500" : "orange.500"}>
+                      {report.status}
+                    </Text>
+                  </HStack>
+                ))}
+              </VStack>
             </CardBody>
           </Card>
-        </Box>
-        <Card
-          p='22px'
-          my={{ sm: "24px", lg: "0px" }}
-          ms={{ sm: "0px", lg: "24px" }}>
-          <CardHeader>
-            <Flex justify='space-between' align='center' mb='1rem' w='100%'>
-              <Text fontSize='lg' color={textColor} fontWeight='bold'>
-                Invoices
-              </Text>
-              <Button
-                variant='outlined'
-                color={colorMode === "dark" && "white"}
-                borderColor={colorMode === "dark" && "white"}
-                _hover={colorMode === "dark" && "none"}
-                minW='110px'
-                maxH='35px'>
-                VIEW ALL
-              </Button>
-            </Flex>
-          </CardHeader>
-          <CardBody>
-            <Flex direction='column' w='100%'>
-              {invoicesData.map((row, idx) => {
-                return (
-                  <InvoicesRow
-                    date={row.date}
-                    code={row.code}
-                    price={row.price}
-                    logo={row.logo}
-                    format={row.format}
-                    key={idx}
-                  />
-                );
-              })}
-            </Flex>
-          </CardBody>
-        </Card>
-      </Grid>
-      <Grid templateColumns={{ sm: "1fr", lg: "1.6fr 1.2fr" }}>
-        <Card my={{ lg: "24px" }} me={{ lg: "24px" }}>
-          <Flex direction='column'>
-            <CardHeader py='12px'>
-              <Text color={textColor} fontSize='lg' fontWeight='bold'>
-                Billing Information
-              </Text>
+
+          <Card>
+            <CardHeader>
+              <Text fontSize='lg' fontWeight='bold'>Collaborateurs Actifs</Text>
             </CardHeader>
             <CardBody>
-              <Flex direction='column' w='100%'>
-                {billingData.map((row, key) => {
-                  return (
-                    <BillingRow
-                      name={row.name}
-                      company={row.company}
-                      email={row.email}
-                      number={row.number}
-                      key={key}
-                    />
-                  );
-                })}
-              </Flex>
+              <AvatarGroup size='md' max={5}>
+                {[...new Set(reports.map(r => r.author))].map((author, index) => (
+                  <Avatar key={index} name={author} />
+                ))}
+              </AvatarGroup>
             </CardBody>
-          </Flex>
-        </Card>
-        <Card my='24px' ms={{ lg: "24px" }}>
-          <CardHeader mb='12px'>
-            <Flex direction='column' w='100%'>
-              <Flex
-                direction={{ sm: "column", lg: "row" }}
-                justify={{ sm: "center", lg: "space-between" }}
-                align={{ sm: "center" }}
-                w='100%'
-                my={{ md: "12px" }}>
-                <Text
-                  color={textColor}
-                  fontSize={{ sm: "lg", md: "xl", lg: "lg" }}
-                  fontWeight='bold'>
-                  Your Transactions
-                </Text>
-                <Flex align='center'>
-                  <Icon
-                    as={FaRegCalendarAlt}
-                    color='gray.400'
-                    fontSize='md'
-                    me='6px'></Icon>
-                  <Text color='gray.400' fontSize='sm' fontWeight='semibold'>
-                    23 - 30 March 2022
-                  </Text>
-                </Flex>
-              </Flex>
-            </Flex>
-          </CardHeader>
-          <CardBody>
-            <Flex direction='column' w='100%'>
-              <Text
-                color='gray.400'
-                fontSize={{ sm: "sm", md: "md" }}
-                fontWeight='semibold'
-                my='12px'>
-                NEWEST
-              </Text>
-              {newestTransactions.map((row, idx) => {
-                return (
-                  <TransactionRow
-                    name={row.name}
-                    logo={row.logo}
-                    date={row.date}
-                    price={row.price}
-                    key={idx}
-                  />
-                );
-              })}
-              <Text
-                color='gray.400'
-                fontSize={{ sm: "sm", md: "md" }}
-                fontWeight='semibold'
-                my='12px'>
-                OLDER
-              </Text>
-              {olderTransactions.map((row, idx) => {
-                return (
-                  <TransactionRow
-                    name={row.name}
-                    logo={row.logo}
-                    date={row.date}
-                    price={row.price}
-                    key={idx}
-                  />
-                );
-              })}
-            </Flex>
-          </CardBody>
-        </Card>
+          </Card>
+        </VStack>
       </Grid>
     </Flex>
   );
 }
 
-export default Billing;
+export default ImpressionLists;

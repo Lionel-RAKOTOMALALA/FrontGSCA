@@ -53,7 +53,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/support-page",
+    path: "/assistance",
     name: "Assistance",
     icon: <SupportIcon color='inherit' />,
     layout: "/admin",

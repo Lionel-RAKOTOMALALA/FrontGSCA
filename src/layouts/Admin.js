@@ -29,6 +29,7 @@ import PanelContainer from "../components/Layout/PanelContainer";
 import PanelContent from "../components/Layout/PanelContent";
 import bgAdmin from "assets/img/admin-background.png";
 import Dashboard from "../views/Dashboard/Dashboard";
+import Assistance from "../views/Dashboard/Assistance"
 import Tables from "views/Dashboard/Tables";
 import Profile from "views/Dashboard/Profile";
 import Billing from "views/Dashboard/Billing";
@@ -166,7 +167,8 @@ export default function Dashboarda(props) {
               <Route path="/profile" element={<Profile/>}/>
               <Route path="/billing" element={<Billing/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
-                <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="/assistance" element={<Assistance/>}/>
+              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
               </Routes>
             </PanelContainer>
           </PanelContent>
