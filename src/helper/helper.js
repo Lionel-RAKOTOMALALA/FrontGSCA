@@ -19,7 +19,7 @@ export async function getUsername() {
 /** authenticate function */
 export async function authenticate(username) {
     try {
-        return await axios.post('http://localhost:8000/api/authenticate', { username });
+        return await axios.post('/api/authenticate', { username });
     } catch (error) {
         return { error: "Username doesn't exist...!" };
     }
@@ -49,7 +49,7 @@ export async function registerUser(credentials) {
 /** Login function */
 export async function verifyPassword(credentials, setUsername) {
     try {
-        const response = await fetch('http://localhost:8000/api/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
