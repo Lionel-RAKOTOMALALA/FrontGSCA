@@ -15,6 +15,7 @@ import {
   DrawerOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useAuthStore } from 'store/store';
 import { navigate, useNavigate } from "react-router-dom";
 import { ChevronDownIcon, ChevronUpIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { NavLink, useLocation } from "react-router-dom";
@@ -32,6 +33,23 @@ import {
 } from "components/Scrollbar/Scrollbar";
 
 function Sidebar(props) {
+  
+  // Récupération des fonctions de Zustand
+  const setActive = useAuthStore((state) => state.setActive);
+  const setUsername = useAuthStore((state) => state.setUsername);
+
+  const handleLogout = () => {
+    // Vider tout le localStorage
+    localStorage.clear();
+     
+    // Réinitialiser l'état du store Zustand
+    setActive(false);    // Désactiver l'utilisateur
+    setUsername('');     // Réinitialiser le nom d'utilisateur
+    
+ 
+     // Redirige l'utilisateur vers la page de connexion
+     navigate('/auth/signin');
+   };
   const location = useLocation();
   const mainPanel = React.useRef();
   const variantChange = "0.2s linear";
@@ -44,13 +62,7 @@ function Sidebar(props) {
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
-  const handleLogout = () => {
-    // Supprime le token ou les données de session
-    localStorage.removeItem('token'); // Exemple: si le token est stocké dans le localStorage
 
-    // Redirige l'utilisateur vers la page de connexion
-    navigate('/auth/signin');
-  };
   const createLinks = (routes) => {
     const activeBg = useColorModeValue("white", "navy.700");
     const inactiveBg = useColorModeValue("white", "navy.700");
@@ -388,6 +400,25 @@ function Sidebar(props) {
 }
 
 export function SidebarResponsive(props) {
+  
+  // Récupération des fonctions de Zustand
+  const setActive = useAuthStore((state) => state.setActive);
+  const setUsername = useAuthStore((state) => state.setUsername);
+
+  const handleLogout = () => {
+   // Vider tout le localStorage
+   localStorage.clear();
+    
+   // Réinitialiser l'état du store Zustand
+   setActive(false);    // Désactiver l'utilisateur
+   setUsername('');     // Réinitialiser le nom d'utilisateur
+   
+
+    // Redirige l'utilisateur vers la page de connexion
+    navigate('/auth/signin');
+  };
+  const navigate = useNavigate();
+
   const location = useLocation();
   const { logo, routes, colorMode, hamburgerColor, ...rest } = props;
   const mainPanel = React.useRef();
@@ -672,54 +703,53 @@ export function SidebarResponsive(props) {
               {brand}
               <Stack direction="column" mb="40px">
                 <Box>{createLinks(routes)}</Box>
-                <NavLink to="/logout">
-                  <Button
-                    boxSize="initial"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    bg="transparent"
-                    mb={{
-                      xl: "6px",
-                    }}
-                    mx={{
-                      xl: "auto",
-                    }}
-                    py="12px"
-                    ps={{
-                      sm: "10px",
-                      xl: "16px",
-                    }}
-                    borderRadius="15px"
-                    _hover={{
-                      bg: "transparent",
-                    }}
-                    w="100%"
-                    _active={{
-                      bg: "inherit",
-                      transform: "none",
-                      borderColor: "transparent",
-                    }}
-                    _focus={{
-                      boxShadow: "none",
-                    }}
-                  >
-                    <Flex>
-                      <IconBox
-                        bg="#F81037"
-                        color="white"
-                        h="30px"
-                        w="30px"
-                        me="12px"
-                        transition={variantChange}
-                      >
-                        <Icon as={LogoutIcon} w="20px" h="20px" color="white" />
-                      </IconBox>
-                      <Text color="#F81037" my="auto" fontSize="sm">
-                        Déconnexion
-                      </Text>
-                    </Flex>
-                  </Button>
-                </NavLink>
+                <Button
+      onClick={handleLogout} // Associe la fonction de déconnexion ici
+      boxSize="initial"
+      justifyContent="flex-start"
+      alignItems="center"
+      bg="transparent"
+      mb={{
+        xl: "6px",
+      }}
+      mx={{
+        xl: "auto",
+      }}
+      py="12px"
+      ps={{
+        sm: "10px",
+        xl: "16px",
+      }}
+      borderRadius="15px"
+      _hover={{
+        bg: "transparent",
+      }}
+      w="100%"
+      _active={{
+        bg: "inherit",
+        transform: "none",
+        borderColor: "transparent",
+      }}
+      _focus={{
+        boxShadow: "none",
+      }}
+    >
+      <Flex>
+        <IconBox
+          bg="#F81037"
+          color="white"
+          h="30px"
+          w="30px"
+          me="12px"
+          transition={variantChange}
+        >
+          <LogoutIcon w="20px" h="20px" color="white" />
+        </IconBox>
+        <Text color="#F81037" my="auto" fontSize="sm">
+          Déconnexion
+        </Text>
+      </Flex>
+    </Button>
               </Stack>
             </Box>
           </DrawerBody>

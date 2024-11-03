@@ -3,6 +3,8 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuthStore } from '../store/store'; // Assurez-vous d'importer votre store Zustand ici
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+console.log("Base URL:", axios.defaults.baseURL);
+
 
 /** Make API request */
 
@@ -47,29 +49,26 @@ export async function registerUser(credentials) {
 }
 
 /** Login function */
+
 export async function verifyPassword(credentials, setUsername) {
     try {
-        const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-        });
-
-        const data = await response.json();
+        // Utiliser axios pour envoyer la requête POST
+        const { data } = await axios.post('/api/login', credentials);
         
         console.log('Réponse du serveur:', data); // Log pour voir la réponse complète
-         
-
-
 
         return data;
     } catch (error) {
         console.log('Erreur lors de la connexion:', error.message); // Log de l'erreur
+        // Si l'erreur contient une réponse du serveur, affichez-la
+        if (error.response && error.response.data) {
+            return { error: error.response.data };
+        }
+        // Autrement, affichez un message générique
         return { error: error.message };
     }
 }
+
 
 /** update user function */
 export async function updateUser(response) {

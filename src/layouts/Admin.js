@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import Configurator from "components/Configurator/Configurator";
 import Footer from "components/Footer/Footer.js";
+import { AuthorizeUser } from "middleware/auth";
 import {
   ArgonLogoDark,
   ArgonLogoLight,

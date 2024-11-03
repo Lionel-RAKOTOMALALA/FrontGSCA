@@ -9,6 +9,7 @@
   import { ChakraProvider } from "@chakra-ui/react";
   // Custom Chakra theme
   import theme from "./theme/theme.js";
+  import { AuthorizeUser,RedirectIfAuthenticated } from "middleware/auth.js";
   axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
   // Créer un root pour la nouvelle version de ReactDOM
@@ -18,8 +19,8 @@
     <ChakraProvider theme={theme} resetCss={false} position="relative">
       <HashRouter>
         <Routes>
-          <Route path={`/auth/*`} element={<AuthLayout />} />
-          <Route path={`/admin/*`} element={<AdminLayout />} /> {/* Utilisez /* pour rendre les sous-routes */}
+          <Route path={`/auth/*`} element={<RedirectIfAuthenticated><AuthLayout /></RedirectIfAuthenticated>} />
+          <Route path={`/admin/*`} element={<AuthorizeUser><AdminLayout /></AuthorizeUser>} /> {/* Utilisez /* pour rendre les sous-routes */}
           <Route path={`/rtl`} element={<RTLLayout />} />
           <Route path={`/`} element={<Navigate to="/admin/dashboard" />} /> {/* Utiliser Navigate au lieu de Redirect */}
         </Routes>
