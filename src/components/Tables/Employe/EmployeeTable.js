@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { EMPLOYEES, EMPLOYEE_STATUSES } from '../../../store/EmployeeStore';
+import React, { useState,useEffect } from 'react';
+import {  EMPLOYEE_STATUSES, EmployeeStore } from '../../../store/EmployeeStore';
 import DateCell from '../TableConfig/DateCell';
 import EditableCell from '../TableConfig/EditableCell';
 import Filters from '../TableConfig/Filters';
@@ -8,9 +8,24 @@ import StatusCell from '../TableConfig/StatusCell';
 import { Box, Flex, Table, Thead, Tbody, Tr, Th, Td, useColorModeValue, Button } from '@chakra-ui/react';
 import { EditEmployeeModal } from '../../Modals/EditEmployeModal';
 import { ViewEmployeeModal } from '../../Modals/ViewEmployeeModal';
+import useFetchEmploye from 'hooks/employe.hook';
+import { useAuthStore } from 'store/store';
 
 const EmployeeTable = () => {
-    const [employees, setEmployees] = useState(EMPLOYEES);
+    // Utiliser useFetch pour récupérer les données des employés
+    // Récupère apiData depuis le store Zustand pour le maintenir en état global
+// Appel de l'API pour les employés
+// Access the employeeData state and ensure it is an array
+useFetchEmploye('employes')
+const employeeData = useAuthStore((state) => state.employeeData) || [];
+
+// UseEffect to display employeeData in the console
+useEffect(() => {
+  console.log("Employé Data profile:", employeeData);
+}, [employeeData]);
+
+
+    const [employees, setEmployees] = useState([]);
     const [columnFilters, setColumnFilters] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const rowsPerPage = 5;
@@ -22,11 +37,7 @@ const EmployeeTable = () => {
     const borderColor = useColorModeValue("gray.200", "gray.600");
     const textTableColor = useColorModeValue("gray.500", "white");
 
-    const filteredEmployees = employees.filter(employee => 
-        columnFilters.every(filter => employee.name.toLowerCase().includes(filter.value.toLowerCase()))
-    );
 
-    const displayedEmployees = filteredEmployees.slice(currentPage * rowsPerPage, (currentPage + 1) * rowsPerPage);
 
     const handleDelete = (id) => {
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?");
@@ -71,6 +82,11 @@ const EmployeeTable = () => {
         setViewModalOpen(true);
     };
 
+
+
+
+
+
     return (
         <Box p={4}>
             <Filters 
@@ -99,14 +115,14 @@ const EmployeeTable = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {displayedEmployees.map((employee) => (
-                            <Tr key={employee.id_employe}>
+                        {employeeData.map((employee) => (
+                            <Tr key={employee.employe.id_employe}>
                                 <Td color={textTableColor} fontSize='sm' fontWeight='bold' borderColor={borderColor}>
-                                    {employee.id_employe}
+                                    {employee.employe._id}
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' fontWeight='bold' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.nom} 
+                                        value={employee.employe.nom} 
                                         columnId="nom" 
                                         onChange={(columnId, newNom) => {
                                             if (newNom) {
@@ -117,7 +133,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' fontWeight='bold' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.prenom} 
+                                        value={employee.employe.prenom} 
                                         columnId="prenom" 
                                         onChange={(columnId, newPrenom) => {
                                             if (newPrenom) {
@@ -128,7 +144,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <DateCell 
-                                        value={employee.date_naissance} 
+                                        value={employee.employe.date_naissance} 
                                         updateData={updateData} 
                                         rowId={employee.id_employe} 
                                         columnId="date_naissance" 
@@ -136,7 +152,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.age.toString()} 
+                                        value={"16"} 
                                         columnId="age" 
                                         onChange={(columnId, newAge) => {
                                             if (newAge) {
@@ -147,7 +163,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.genre} 
+                                        value={employee.employe.genre} 
                                         columnId="genre" 
                                         onChange={(columnId, newGenre) => {
                                             if (newGenre) {
@@ -158,7 +174,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.situation_matrimoniale} 
+                                        value={employee.employe.situation_matrimoniale} 
                                         columnId="situation_matrimoniale" 
                                         onChange={(columnId, newSituation) => {
                                             if (newSituation) {
@@ -169,7 +185,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.contact_personnel} 
+                                        value={employee.employe.contact_personnel} 
                                         columnId="contact_personnel" 
                                         onChange={(columnId, newContact) => {
                                             if (newContact) {
@@ -180,7 +196,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.email} 
+                                        value={employee.employe.email} 
                                         columnId="email" 
                                         onChange={(columnId, newEmail) => {
                                             if (newEmail) {
@@ -191,7 +207,7 @@ const EmployeeTable = () => {
                                 </Td>
                                 <Td color={textTableColor} fontSize='sm' borderColor={borderColor}>
                                     <EditableCell 
-                                        value={employee.poste.titre_poste} 
+                                        value={"Informaticien"} 
                                         columnId="titre_poste" 
                                         onChange={(columnId, newTitre) => {
                                             if (newTitre) {
@@ -245,12 +261,7 @@ const EmployeeTable = () => {
                     </Tbody>
                 </Table>
             </Box>
-            <Pagination 
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalRows={filteredEmployees.length}
-                rowsPerPage={rowsPerPage}
-            />
+
             <EditEmployeeModal 
                 isOpen={isEditModalOpen} 
                 onClose={handleModalClose} 

@@ -8,6 +8,8 @@ export const useAuthStore = create(
         username: '',
         active: false,
       },
+      apiData: null, // Données API générales ou spécifiques à l'utilisateur
+      employeeData: null, // Données spécifiques aux employés
       setUsername: (name) =>
         set((state) => ({
           auth: {
@@ -22,6 +24,16 @@ export const useAuthStore = create(
             active: status,
           },
         })),
+        
+      // Met à jour apiData
+      setApiData: (data) => {
+        set(() => ({ apiData: data }));
+      },
+
+      // Met à jour employeeData
+      setEmployeeData: (data) => {
+        set(() => ({ employeeData: data }));
+      },
     }),
     {
       name: 'auth-storage', // Nom de l'élément dans le localStorage
@@ -29,3 +41,4 @@ export const useAuthStore = create(
     }
   )
 );
+  

@@ -5,22 +5,13 @@ import {
   Flex,
   Grid,
   Icon,
-  Image,
-  Progress,
-  SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
   Text,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import avatar5 from "assets/img/avatars/avatar5.png";
-import bgProfile from "assets/img/BackgroundCard1.png";
-import Card from "components/Card/Card";
-import CardBody from "components/Card/CardBody";
-import CardHeader from "components/Card/CardHeader";
-import React from "react";
+import useFetch from "hooks/fetch.hook";
+import React, { useEffect } from "react";
 import {
   FaBriefcase,
   FaCalendarAlt,
@@ -29,9 +20,12 @@ import {
   FaIdCard,
   FaMapMarkerAlt,
   FaPhone,
-  FaShieldAlt,
 } from "react-icons/fa";
 import { IoDocumentsSharp } from "react-icons/io5";
+import Card from "components/Card/Card";
+import CardBody from "components/Card/CardBody";
+import CardHeader from "components/Card/CardHeader";
+import { useAuthStore } from "store/store";
 
 function Profile() {
   const { colorMode } = useColorMode();
@@ -43,7 +37,17 @@ function Profile() {
   const iconBoxInside = useColorModeValue("white", "white");
   const iconTeal = useColorModeValue("teal.300", "teal.300");
   const iconBlue = useColorModeValue("blue.500", "blue.500");
-  const iconRed = useColorModeValue("red.500", "red.500");
+
+// Récupérer apiData depuis le store
+const apiData = useAuthStore((state) => state.apiData);
+useFetch()
+// Utiliser useEffect pour afficher les données en console
+useEffect(() => {
+  console.log("API Data profile:", apiData);
+}, [apiData]);
+
+// Vérifie si les données sont disponibles avant de les afficher
+if (!apiData || !apiData.employe) return null;
 
   return (
     <Flex direction='column'>
@@ -109,69 +113,16 @@ function Profile() {
                   fontWeight='bold'
                   ms={{ sm: "8px", md: "0px" }}
                 >
-                  Jean Dupont
+                  {apiData.employe.prenom} {apiData.employe.nom}
                 </Text>
                 <Text
                   fontSize={{ sm: "sm", md: "md" }}
                   color={emailColor}
                   fontWeight='semibold'
                 >
-                  Agent de sécurité publique
+                  {apiData.employe.profile}
                 </Text>
               </Flex>
-            </Flex>
-            <Flex
-              direction={{ sm: "column", lg: "row" }}
-              w={{ sm: "100%", md: "50%", lg: "auto" }}
-            >
-              <Button p='0px' bg='transparent' variant='no-effects'>
-                <Flex
-                  align='center'
-                  w={{ sm: "100%", lg: "135px" }}
-                  bg={colorMode === "dark" ? "navy.900" : "#fff"}
-                  borderRadius='8px'
-                  justifyContent='center'
-                  py='10px'
-                  boxShadow='0px 2px 5.5px rgba(0, 0, 0, 0.06)'
-                  cursor='pointer'
-                >
-                  <Icon color={textColor} as={FaCube} me='6px' />
-                  <Text fontSize='xs' color={textColor} fontWeight='bold'>
-                    APERÇU
-                  </Text>
-                </Flex>
-              </Button>
-              <Button p='0px' bg='transparent' variant='no-effects'>
-                <Flex
-                  align='center'
-                  w={{ lg: "135px" }}
-                  borderRadius='15px'
-                  justifyContent='center'
-                  py='10px'
-                  mx={{ lg: "1rem" }}
-                  cursor='pointer'
-                >
-                  <Icon color={textColor} as={IoDocumentsSharp} me='6px' />
-                  <Text fontSize='xs' color={textColor} fontWeight='bold'>
-                    DOCUMENTS
-                  </Text>
-                </Flex>
-              </Button>
-              <Button p='0px' bg='transparent' variant='no-effects'>
-                <Flex
-                  align='center'
-                  w={{ lg: "135px" }}
-                  borderRadius='15px'
-                  justifyContent='center'
-                  py='10px'
-                  cursor='pointer'
-                >
-                  <Icon color={textColor} as={FaIdCard} me='6px' />
-                  <Text fontSize='xs' color={textColor} fontWeight='bold'>
-                    IDENTITÉ
-                  </Text>
-                </Flex>
-              </Button>
             </Flex>
           </Flex>
         </Box>
@@ -187,58 +138,65 @@ function Profile() {
             <Flex direction='column'>
               <Flex align='center' mb='18px'>
                 <Icon as={FaIdCard} me='4px' color={iconBlue} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
                   Nom complet:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  Jean Dupont
+                  {apiData.employe.prenom} {apiData.employe.nom}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
                 <Icon as={FaPhone} me='4px' color={iconBlue} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
                   Téléphone:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  +33 6 12 34 56 78
+                  {apiData.employe.contact_personnel}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
                 <Icon as={FaEnvelope} me='4px' color={iconBlue} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
                   Email:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  jean.dupont@srsp.fr
+                  {apiData.employe.email}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
                 <Icon as={FaMapMarkerAlt} me='4px' color={iconBlue} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
                   Adresse:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  123 Rue de la Paix, 75001 Paris
+                  {apiData.employe.adresse}
+                </Text>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Icon as={FaCalendarAlt} me='4px' color={iconBlue} />
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Date de naissance:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {new Date(apiData.employe.date_naissance).toLocaleDateString()}
+                </Text>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Icon as={FaBriefcase} me='4px' color={iconBlue} />
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Profil:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {apiData.employe.profile}
+                </Text>
+              </Flex>
+
+              <Flex align='center' mb='18px'>
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Diplome:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {apiData.diplomes[0].diplome}
                 </Text>
               </Flex>
             </Flex>
@@ -247,65 +205,65 @@ function Profile() {
         <Card p='16px'>
           <CardHeader p='12px 5px' mb='12px'>
             <Text fontSize='lg' color={textColor} fontWeight='bold'>
-              Informations Professionnelles
+              Statut
             </Text>
           </CardHeader>
           <CardBody px='5px'>
             <Flex direction='column'>
               <Flex align='center' mb='18px'>
-                <Icon as={FaBriefcase} me='4px' color={iconTeal} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
-                  Poste actuel:{" "}
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Qualité:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  Agent de sécurité publique
+                  {apiData.statut.qualite}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
-                <Icon as={FaCalendarAlt} me='4px' color={iconTeal} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
-                  Date d'entrée:{" "}
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Categorie:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  15 mars 2015
+                  {apiData.statut.categorie}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
-                <Icon as={FaShieldAlt} me='4px' color={iconTeal} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
-                  Statut:{" "}
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Corps:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  Actif
+                  {apiData.statut.corps}
                 </Text>
               </Flex>
               <Flex align='center' mb='18px'>
-                <Icon as={FaCube} me='4px' color={iconTeal} />
-                <Text
-                  fontSize='sm'
-                  color={textColor}
-                  fontWeight='bold'
-                  me='10px'
-                >
-                  Spécialité:{" "}
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Grade:{" "}
                 </Text>
                 <Text fontSize='sm' color='gray.400' fontWeight='400'>
-                  Gestion de crise
+                  {apiData.statut.grade}
+                </Text>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Statut non encadré:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {apiData.statut.situation_non_encadres}
+                </Text>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Structure:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {apiData.statut.structure}
+                </Text>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Indice:{" "}
+                </Text>
+                <Text fontSize='sm' color='gray.400' fontWeight='400'>
+                  {apiData.statut.indice}
                 </Text>
               </Flex>
             </Flex>
@@ -314,63 +272,57 @@ function Profile() {
         <Card p='16px'>
           <CardHeader p='12px 5px' mb='12px'>
             <Text fontSize='lg' color={textColor} fontWeight='bold'>
-              Statistiques
+              Documents
             </Text>
           </CardHeader>
           <CardBody px='5px'>
-            <SimpleGrid columns={2} gap='20px'>
-              <Stat>
-                <Flex>
-                  <StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='.1rem'>
-                    Années de service
-                  </StatLabel>
-                  <Flex align='center'>
-                    <Icon as={FaCalendarAlt} color={iconRed} w='15px' h='15px' />
-                  </Flex>
-                </Flex>
-                <StatNumber fontSize='lg' color={textColor}>
-                  8
-                </StatNumber>
-                <Box my='.5rem'>
-                  <Progress colorScheme='red' size='xs' value={80} borderRadius='15px' />
-                </Box>
-              </Stat>
-              <Stat>
-                <Flex>
-                  <StatLabel fontSize='sm' color='gray.400' fontWeight='bold' pb='.1rem'>
-                    Missions réussies
-                  </StatLabel>
-                  <Flex align='center'>
-                    <Icon as={FaShieldAlt} color={iconBlue} w='15px' h='15px' />
-                  </Flex>
-                </Flex>
-                <StatNumber fontSize='lg' color={textColor}>
-                  95%
-                </StatNumber>
-                <Box my='.5rem'>
-                  <Progress colorScheme='blue' size='xs' value={95} borderRadius='15px' />
-                </Box>
-              </Stat>
-            </SimpleGrid>
+            <Flex direction='column'>
+              <Flex align='center' mb='18px'>
+                <Icon as={IoDocumentsSharp} me='4px' color={iconTeal} />
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Contrat:{" "}
+                </Text>
+                <Button
+                  size='sm'
+                  colorScheme='teal'
+                  variant='outline'
+                  onClick={() => window.open(apiData.documents.contrat, '_blank')}
+                >
+                  Télécharger
+                </Button>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Icon as={IoDocumentsSharp} me='4px' color={iconTeal} />
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Attestation:{" "}
+                </Text>
+                <Button
+                  size='sm'
+                  colorScheme='teal'
+                  variant='outline'
+                  onClick={() => window.open(apiData.documents.attestation, '_blank')}
+                >
+                  Télécharger
+                </Button>
+              </Flex>
+              <Flex align='center' mb='18px'>
+                <Icon as={IoDocumentsSharp} me='4px' color={iconTeal} />
+                <Text fontSize='sm' color={textColor} fontWeight='bold' me='10px'>
+                  Certificat:{" "}
+                </Text>
+                <Button
+                  size='sm'
+                  colorScheme='teal'
+                  variant='outline'
+                  onClick={() => window.open(apiData.documents.certificat, '_blank')}
+                >
+                  Télécharger
+                </Button>
+              </Flex>
+            </Flex>
           </CardBody>
         </Card>
       </Grid>
-      <Card p='16px' my='24px'>
-        <CardHeader p='12px 5px' mb='12px'>
-          <Text fontSize='lg' color={textColor} fontWeight='bold'>
-            Résumé Professionnel
-          </Text>
-        </CardHeader>
-        <CardBody px='5px'>
-          <Text fontSize='md' color='gray.400' fontWeight='400'>
-            Agent SRSP depuis 2015, spécialisé dans la gestion de projets de sécurité publique.
-            Expérience dans la coordination d'équipes multidisciplinaires et la mise en œuvre de
-            protocoles de sécurité avancés. Compétences clés en gestion de crise, communication
-            d'urgence et analyse de risques. Reconnu pour son leadership et sa capacité à prendre
-            des décisions rapides dans des situations critiques.
-          </Text>
-        </CardBody>
-      </Card>
     </Flex>
   );
 }

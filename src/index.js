@@ -3,14 +3,12 @@
   import { HashRouter, Routes, Route, Navigate } from "react-router-dom"; // Importer Routes et Navigate
 
   import AuthLayout from "layouts/Auth.js";
-  import axios from "axios";
+  import axios from "axios"
   import AdminLayout from "./layouts/Admin.js";
-  import RTLLayout from "layouts/RTL.js"; // Chakra imports
   import { ChakraProvider } from "@chakra-ui/react";
   // Custom Chakra theme
   import theme from "./theme/theme.js";
   import { AuthorizeUser,RedirectIfAuthenticated } from "middleware/auth.js";
-  axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
 
   // Créer un root pour la nouvelle version de ReactDOM
   const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -21,7 +19,6 @@
         <Routes>
           <Route path={`/auth/*`} element={<RedirectIfAuthenticated><AuthLayout /></RedirectIfAuthenticated>} />
           <Route path={`/admin/*`} element={<AuthorizeUser><AdminLayout /></AuthorizeUser>} /> {/* Utilisez /* pour rendre les sous-routes */}
-          <Route path={`/rtl`} element={<RTLLayout />} />
           <Route path={`/`} element={<Navigate to="/admin/dashboard" />} /> {/* Utiliser Navigate au lieu de Redirect */}
         </Routes>
       </HashRouter>
