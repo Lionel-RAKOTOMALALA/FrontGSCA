@@ -40,11 +40,33 @@ export async function getUser({ username }) {
 /** register user function */
 export async function registerUser(credentials) {
     try {
-        const { data: { msg }, status } = await axios.post('http://localhost:8000/api/register', credentials);
+        const { data: { msg }, status } = await axios.post('/api/register', credentials);
 
         return Promise.resolve(msg);
     } catch (error) {
         return Promise.reject({ error });
+    }
+}
+export async function createEmploye(data) {
+    try {
+        // Récupérer le token du localStorage
+        const token = localStorage.getItem('token');
+
+        if (!token) throw new Error("Token d'authentification manquant");
+
+        // Appel API pour créer un nouvel employé avec le token d'authentification
+        const response = await axios.post('/api/employes/ajouter', data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Ajout du token d'autorisation
+            }
+        });
+
+        // Renvoyer le message de succès ou les données de l'employé
+        return Promise.resolve(response.data);
+    } catch (error) {
+        // Rejeter la promesse en cas d'erreur
+        return Promise.reject({ error: error.response ? error.response.data : error.message });
     }
 }
 
