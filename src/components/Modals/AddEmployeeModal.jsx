@@ -133,11 +133,75 @@
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      
-      const token = localStorage.getItem('authToken');
+    
+      const token = localStorage.getItem('token');
+    
+      // Créer un objet avec la structure correcte pour l'API
+      const dataToSend = {
+        employe: {
+          nom: employe.nom,
+          prenom: employe.prenom,
+          date_naissance: employe.date_naissance,
+          email: employe.email,
+          telephone: employe.telephone,
+          adresse: employe.adresse,
+          contact_flotte: employe.contact_flotte,
+          contact_personnel: employe.contact_personnel,
+          situation_matrimoniale: employe.situation_matrimoniale,
+          genre: employe.genre,
+          age: employe.age,
+          password: employe.password,
+          username: employe.username,
+        },
+        statut: {
+          structure: statut.structure,
+          indice: statut.indice,
+          grade: statut.grade,
+          corps: statut.corps,
+          categorie: statut.categorie,
+          qualite: statut.qualite,
+          code_cadre: statut.code_cadre,
+          status: statut.status,
+          date_debut: statut.date_debut,
+          date_fin: statut.date_fin,
+        },
+        affectation: {
+          id_departement: affectation.id_departement,
+          date_affectation: affectation.date_affectation,
+          motif_depart_arrivee: affectation.motif_depart_arrivee,
+          lieu_affectation: affectation.lieu_affectation,
+          date_prise_service: affectation.date_prise_service,
+          date_entree_admin: affectation.date_entree_admin,
+        },
+        diplome: {
+          id_diplome: diplome.id_diplome,
+          cursus: diplome.cursus,
+          diplome: diplome.diplome,
+          date_obtention: diplome.date_obtention,
+          etablissement: diplome.etablissement,
+        },
+        decision: {
+          id_decision: decision.id_decision,
+          numero_decision: decision.numero_decision,
+          date_decision: decision.date_decision,
+          commentaire: decision.commentaire,
+        },
+        poste: {
+          titre_poste: poste.titre_poste,
+          description_poste: poste.description_poste,
+          departement: poste.departement,
+          salaire_min: poste.salaire_min,
+          salaire_max: poste.salaire_max,
+          effectifs_a_pourvoir: poste.effectifs_a_pourvoir,
+        },
+        service: {
+          nom_service: service.nom_service,
+          description: service.description,
+        },
+      };
     
       try {
-        const response = await fetch('/api/employes', {
+        const response = await fetch('http://localhost:8000/api/employes/ajouter', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -145,15 +209,7 @@
             'Cache-Control': 'no-cache',  // Désactive le cache
             'Pragma': 'no-cache',         // Option supplémentaire pour désactiver le cache
           },
-          body: JSON.stringify({
-            employe,
-            statut,
-            affectation,
-            diplome,
-            decision,
-            poste,
-            service,
-          }),
+          body: JSON.stringify(dataToSend),
         });
     
         if (response.ok) {
@@ -165,6 +221,7 @@
           });
           onClose();
         } else {
+          console.error("Erreur ajout : ", await response.json());
           throw new Error("Erreur lors de l'ajout de l'employé");
         }
       } catch (error) {
@@ -177,7 +234,7 @@
         });
       }
     };
-    
+      
 
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
